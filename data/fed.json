@@ -1,0 +1,26 @@
+{
+  "updated_at": "2026-07-28T07:55:00+08:00",
+  "items": [
+    {
+      "title": "聯準會主席：抗通膨仍需保持耐心，不急於降息",
+      "source": "Google 新聞",
+      "url": "https://news.google.com/",
+      "time": "2026-07-27T09:00:00+08:00",
+      "stance": "hawk"
+    },
+    {
+      "title": "聯準會理事：勞動市場已明顯降溫",
+      "source": "Google 新聞",
+      "url": "https://news.google.com/",
+      "time": "2026-07-26T14:00:00+08:00",
+      "stance": "dove"
+    },
+    {
+      "title": "FOMC 會議紀要：年內或仍有一次降息空間",
+      "source": "Google 新聞",
+      "url": "https://news.google.com/",
+      "time": "2026-07-25T02:00:00+08:00",
+      "stance": "dove"
+    }
+  ]
+}

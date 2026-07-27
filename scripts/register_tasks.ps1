@@ -1,4 +1,7 @@
-﻿# Register Windows Task Scheduler jobs for 08:00 and 21:00 daily.
+# Register Windows Task Scheduler jobs — 每天 4 次自動更新全站資料
+#   04:00 (美股收盤後) / 08:00 (台股開盤前) / 14:00 (台股收盤後) / 20:00 (美股開盤前)
+# 每次都執行 run_all.py，重抓真實資料（市場/新聞/TSMC/本益比/事件/Fed）並覆蓋。
+#
 # Run from project root:
 #   powershell -ExecutionPolicy Bypass -File scripts\register_tasks.ps1
 
@@ -36,19 +39,38 @@ function Register-NewsTask {
     Write-Host ("[ok] registered {0} at {1}" -f $Name, $Time)
 }
 
+# 每天 4 個更新時段
+$Tasks = @(
+    @{ Name = "StarkLabNews_0400"; Time = "04:00" },  # 美股收盤後
+    @{ Name = "StarkLabNews_0800"; Time = "08:00" },  # 台股開盤前
+    @{ Name = "StarkLabNews_1400"; Time = "14:00" },  # 台股收盤後
+    @{ Name = "StarkLabNews_2000"; Time = "20:00" }   # 美股開盤前
+)
+
 Write-Host "Project root : $Root"
 Write-Host "Python       : $Python"
 Write-Host "Wrapper      : $Wrapper"
 Write-Host ""
 
-Register-NewsTask -Name "StarkLabNews_0800" -Time "08:00"
-Register-NewsTask -Name "StarkLabNews_2100" -Time "21:00"
+# 先清掉舊版排程（原本的 21:00，以及不在新清單內的殘留），避免重複觸發
+$KeepNames = $Tasks | ForEach-Object { $_.Name }
+Get-ScheduledTask -TaskName "StarkLabNews_*" -ErrorAction SilentlyContinue | ForEach-Object {
+    if ($KeepNames -notcontains $_.TaskName) {
+        Unregister-ScheduledTask -TaskName $_.TaskName -Confirm:$false -ErrorAction SilentlyContinue
+        Write-Host ("[--] removed old task {0}" -f $_.TaskName)
+    }
+}
+
+foreach ($t in $Tasks) {
+    Register-NewsTask -Name $t.Name -Time $t.Time
+}
 
 Write-Host ""
-Write-Host "Done. Test once:"
+Write-Host "Done. Test once now:"
 Write-Host ("  powershell -NoProfile -ExecutionPolicy Bypass -File `"{0}`"" -f $Wrapper)
 Write-Host ""
-Write-Host "Query:"
-Write-Host "  schtasks /Query /TN StarkLabNews_0800 /V /FO LIST"
-Write-Host "  schtasks /Query /TN StarkLabNews_2100 /V /FO LIST"
+Write-Host "Query all 4 tasks:"
+foreach ($t in $Tasks) {
+    Write-Host ("  schtasks /Query /TN {0}" -f $t.Name)
+}
 Write-Host ("Logs: {0}" -f $LogDir)

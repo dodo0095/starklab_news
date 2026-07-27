@@ -1,7 +1,8 @@
 """Fetch top financial headlines via public RSS → data/news.json
 
-Primary: Yahoo Finance + BBC Business (+ optional CNBC/Reuters style feeds)
-Jin10 deferred to P1 (needs API key). See docs/金十驗證結論.md
+來源改為中文財經（決策 A：不用金十，走中文 RSS，2026-07-28）。
+主幹：Google 新聞 zh-TW（穩定、必為中文），輔以鉅亨網 headline RSS。
+中文源本身即中文標題/摘要，省去翻譯。Jin10 若日後有 key 再接（P1）。
 """
 
 from __future__ import annotations
@@ -17,32 +18,37 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 
 from common import DATA_DIR, TW, now_iso, write_json
 
+def _gnews(query: str) -> str:
+    from urllib.parse import quote
+    return (
+        "https://news.google.com/rss/search?q="
+        + quote(query)
+        + "&hl=zh-TW&gl=TW&ceid=TW:zh-Hant"
+    )
+
+
 FEEDS = [
-    ("Yahoo Finance", "https://finance.yahoo.com/rss/topfinstories"),
-    ("Yahoo Finance", "https://finance.yahoo.com/news/rssindex"),
-    ("BBC Business", "https://feeds.bbci.co.uk/news/business/rss.xml"),
-    (
-        "Google News",
-        "https://news.google.com/rss/search?q=stock+market+OR+Federal+Reserve+OR+TSMC+when:1d&hl=en-US&gl=US&ceid=US:en",
-    ),
+    # 主幹：Google 新聞 zh-TW，保證中文、穩定
+    ("Google 新聞", _gnews("美股 OR 台股 OR 華爾街 OR 那斯達克 OR 道瓊 when:1d")),
+    ("Google 新聞", _gnews("(聯準會 OR Fed OR 通膨 OR 利率 OR 非農) when:1d")),
+    # 輔助：鉅亨網頭條（若暫時失效不影響主幹）
+    ("鉅亨網", "https://news.cnyes.com/rss/v1/news/category/headline"),
 ]
 
-# Major / macro themes — boost score
+# 重大 / 總經主題 — 加權（中文為主，保留英文以防中英混雜來源）
 KEYWORDS_MAJOR = re.compile(
-    r"\b(fed|fomc|powell|rate cut|rate hike|inflation|cpi|ppi|jobs report|nonfarm|nfp|"
-    r"treasury|yield|recession|tariff|trade war|china|taiwan|tsmc|semiconductor|"
-    r"nasdaq|dow jones|s&p|sp500|wall street|oil price|opec|bitcoin|crypto|"
-    r"earnings season|gdp|unemployment|ecb|boj|yen|dollar)\b|"
-    r"股指|美聯儲|聯準會|台積|半導體|非農|川普|關稅|美股|道瓊|納斯達克",
+    r"美股|台股|大盤|加權|道瓊|那斯達克|納斯達克|標普|S&P|費半|"
+    r"聯準會|美聯儲|Fed|FOMC|鮑爾|升息|降息|利率|通膨|CPI|非農|就業|"
+    r"台積|半導體|晶片|輝達|輝達|AI|財報|殖利率|公債|油價|關稅|"
+    r"\b(fed|fomc|powell|inflation|nonfarm|tsmc|semiconductor|nasdaq|"
+    r"dow|s&p|treasury|yield|tariff)\b",
     re.I,
 )
 
-# Single-name pitch / affiliate style — demote
+# 個股推銷 / 標的推薦式 — 降權
 KEYWORDS_PITCH = re.compile(
-    r"\bwhy .+ (traded|slid|gained|fell|rose)\b|"
-    r"\b(top|best) (stock|stocks) to (buy|watch)\b|"
-    r"\bshould you buy\b|\bstock to buy\b|"
-    r"\(\s*[A-Z]{2,5}\s*\)\s+(slid|gained|rallied|plunged|traded)",
+    r"存股|抱緊|飆股|漲停|買進評等|目標價上看|該不該買|報明牌|明牌|"
+    r"\b(top|best) (stock|stocks) to (buy|watch)\b|\bshould you buy\b",
     re.I,
 )
 
@@ -91,11 +97,9 @@ def score_entry(title: str, summary: str, source: str) -> int:
     if KEYWORDS_PITCH.search(title):
         score -= 4
     # ticker-only pitch: "Foo (XYZ) ..." often single-name content
-    if re.match(r"^.+\([A-Z]{1,5}\)\s", title):
-        score -= 2
-    if "BBC" in source or "Google" in source:
+    if "鉅亨" in source or "經濟日報" in source or "工商" in source:
         score += 1
-    if "Yahoo" in source:
+    if "Google" in source:
         score += 1
     return score
 

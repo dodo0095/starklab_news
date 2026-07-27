@@ -13,7 +13,7 @@
 ## 產品一句話
 
 不想花時間整理資訊 — 把**市場總覽、重大新聞、河流圖**自動更新、一站呈現。  
-目標時點：每天 **08:00**（台股開盤前）、**21:00**（美股開盤前）。
+更新時點：每天 **4 次** — **04:00**（美股收盤後）、**08:00**（台股開盤前）、**14:00**（台股收盤後）、**20:00**（美股開盤前）。
 
 ---
 
@@ -68,11 +68,11 @@
 
 | 檔案 | 用途 |
 |------|------|
-| `scripts/register_tasks.ps1` | 註冊 Windows 工作：`StarkLabNews_0800`、`StarkLabNews_2100` |
+| `scripts/register_tasks.ps1` | 註冊 4 個 Windows 工作：`StarkLabNews_0400/0800/1400/2000`（並清掉舊版 2100） |
 | `scripts/update_with_log.ps1` | 更新資料並寫 `logs/update-YYYY-MM-DD.log` |
 | `scripts/start_server.ps1` | 啟動本機靜態站（預設 port 8080） |
 
-**交接當日狀態：** 已在開發機註冊過 08:00 / 21:00 排程，並手動跑通更新（`exit=0`）。  
+**排程：** 每天 4 次（04:00 / 08:00 / 14:00 / 20:00）自動執行 `run_all.py` 重抓全站真實資料。  
 若換電腦或搬資料夾，需在新路徑**重跑** `register_tasks.ps1`。
 
 ### 5. UI 調整
@@ -113,8 +113,10 @@ powershell -ExecutionPolicy Bypass -File scripts\start_server.ps1
 ### 確認排程還在
 
 ```powershell
+schtasks /Query /TN StarkLabNews_0400
 schtasks /Query /TN StarkLabNews_0800
-schtasks /Query /TN StarkLabNews_2100
+schtasks /Query /TN StarkLabNews_1400
+schtasks /Query /TN StarkLabNews_2000
 ```
 
 若沒有：
@@ -148,7 +150,7 @@ starklab_news/
 │   ├── fetch_*.py          # 各資料抓取
 │   ├── run_all.py          # 一次全跑
 │   ├── update_with_log.ps1 # 排程用（有 log）
-│   ├── register_tasks.ps1  # 註冊 08:00 / 21:00
+│   ├── register_tasks.ps1  # 註冊 04:00 / 08:00 / 14:00 / 20:00
 │   └── start_server.ps1    # 本機 HTTP server
 ├── docs/
 │   ├── 使用手冊.md
@@ -176,7 +178,7 @@ starklab_news/
 ### P0 加分 — 已完成大部分
 
 - [x] 真實資料源（yfinance + RSS，非純假資料）  
-- [x] Windows 排程 08:00 / 21:00（開發機已註冊；接手請再確認）  
+- [x] Windows 排程每天 4 次 04:00 / 08:00 / 14:00 / 20:00（接手請再確認）  
 - [x] 非農等條件事件區塊  
 - [ ] 金十串接 → **刻意不做**，改備援（見驗證結論）  
 
@@ -205,7 +207,7 @@ starklab_news/
 
 1. 本機跑一次更新 + 開站，確認畫面與 `data/*.json` 正常  
 2. 查 `schtasks` 兩個任務是否還在；不在就重註冊  
-3. 連續 2～3 個交易日看 `logs/`，確認 08:00 / 21:00 有跑  
+3. 連續 2～3 個交易日看 `logs/`，確認 04:00 / 08:00 / 14:00 / 20:00 有跑  
 4. 再決定下一優先：上伺服器 / 中文新聞源 / 多標的 / 推播  
 
 有問題先對：`docs/使用手冊.md` → 當日 `logs/update-*.log` → 各 `fetch_*.py`。

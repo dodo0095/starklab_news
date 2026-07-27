@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="description" content="個股資訊整合平台 — 市場總覽、重大新聞、河流圖" />
+    <meta name="description" content="個股資訊整合平台 — 市場總覽、重大新聞、本益比河流圖" />
     <title>StarkLab News | 個股資訊整合</title>
     <link
       rel="stylesheet"
@@ -17,52 +17,124 @@
         <h1>StarkLab News</h1>
         <p class="tagline">不想花時間整理資訊 — 開盤前重點一站看完</p>
         <div class="meta-bar">
-          <span>資料更新：<strong id="global-updated">載入中…</strong></span>
-          <span>時段：<strong id="session-label">—</strong></span>
+          <span>最後更新：<strong id="global-updated">載入中…</strong></span>
           <span id="freshness-badge" class="badge">檢查中</span>
+          <span>時段：<strong id="session-label">—</strong></span>
+          <span class="sched">排程：每天 04:00 / 08:00 / 14:00 / 20:00</span>
         </div>
       </div>
     </header>
 
     <main class="container">
-      <!-- Market -->
-      <div class="section-title">
-        <h2>市場總覽</h2>
-        <span class="hint">大盤 / 台積電 ADR</span>
-      </div>
-      <div id="market-status" class="state-box" hidden></div>
-      <div id="market-cards" class="cards" aria-live="polite"></div>
+      <div class="grid">
+        <!-- ROW 1 · 市場總覽 -->
+        <section class="cell c12">
+          <div class="cell-head">
+            <span class="eyebrow">市場總覽 · P0</span>
+            <h2>大盤 / 台積電 ADR</h2>
+          </div>
+          <div id="market-status" class="state-box" hidden></div>
+          <div id="market-cards" class="cards" aria-live="polite"></div>
+        </section>
 
-      <!-- News -->
-      <div class="section-title">
-        <h2>重大新聞 · 前五大</h2>
-        <span class="hint">標題 · 摘要 · 來源</span>
-      </div>
-      <div id="news-status" class="state-box" hidden></div>
-      <div id="news-list" class="panel" aria-live="polite"></div>
+        <!-- ROW 2 · 主角：本益比河流圖 + 側欄 -->
+        <section class="cell c8 card">
+          <div class="cell-head">
+            <span class="eyebrow">核心功能</span>
+            <h2 id="val-title">本益比河流圖</h2>
+            <span class="cell-tag">看現在貴不貴</span>
+          </div>
+          <div class="val-toolbar">
+            <div class="lookup">
+              <input id="val-ticker" type="text" value="2330" aria-label="輸入股票代碼" />
+              <button id="val-go" type="button">查詢</button>
+            </div>
+            <div class="seg" id="val-metric" role="tablist">
+              <span data-metric="PE" class="on" role="tab">本益比 PE</span>
+              <span data-metric="PB" role="tab">淨值比 PB</span>
+            </div>
+            <div class="val-zone">
+              目前 <strong id="val-pe">—</strong>
+              <span id="val-zone" class="zone-badge">—</span>
+            </div>
+          </div>
+          <div id="chart-status" class="state-box" hidden></div>
+          <div class="chart-panel">
+            <div id="river-chart" role="img" aria-label="本益比河流圖"></div>
+          </div>
+          <div class="band-key" id="band-key"></div>
+        </section>
 
-      <!-- Events (conditional) -->
-      <section id="events-section" hidden>
-        <div class="section-title">
-          <h2>關注事件</h2>
-          <span class="hint">有資料才顯示</span>
-        </div>
-        <div id="events-status" class="state-box" hidden></div>
-        <div id="events-list" class="events-grid"></div>
-      </section>
+        <aside class="cell c4 side">
+          <div class="card">
+            <div class="cell-head">
+              <span class="eyebrow">關注事件 · P0</span>
+              <h2>非農 / 月頻數據</h2>
+              <span class="cell-tag">有資料才顯示</span>
+            </div>
+            <div id="events-status" class="state-box" hidden></div>
+            <div id="events-list" class="events-grid"></div>
+          </div>
+          <div class="card">
+            <div class="cell-head">
+              <span class="eyebrow">大盤支撐原因 · P1</span>
+              <h2>今日盤勢重點</h2>
+            </div>
+            <ul id="support-list" class="bullets"></ul>
+          </div>
+        </aside>
 
-      <!-- River chart -->
-      <div class="section-title">
-        <h2 id="chart-title">河流圖</h2>
-        <span class="hint">收盤 + MA5 / MA20 / MA60</span>
-      </div>
-      <div id="chart-status" class="state-box" hidden></div>
-      <div class="chart-panel">
-        <div id="river-chart" role="img" aria-label="個股均線河流圖"></div>
+        <!-- ROW 3 · 三個新聞格子 -->
+        <section class="cell c5 card">
+          <div class="cell-head">
+            <span class="eyebrow">美國重大新聞 · P0</span>
+            <h2>前五大</h2>
+            <span class="cell-tag">中文標題 · 摘要</span>
+          </div>
+          <div id="news-status" class="state-box" hidden></div>
+          <div id="news-list" class="news"></div>
+        </section>
+
+        <section class="cell c4 card">
+          <div class="cell-head">
+            <span class="eyebrow">TSMC 個股新聞 · P0</span>
+            <h2>台積電專區</h2>
+          </div>
+          <div id="tsmc-status" class="state-box" hidden></div>
+          <div id="tsmc-list" class="news"></div>
+        </section>
+
+        <section class="cell c3 card">
+          <div class="cell-head">
+            <span class="eyebrow">聯準會發言 · P1</span>
+            <h2>Fed 重點</h2>
+          </div>
+          <div id="fed-status" class="state-box" hidden></div>
+          <div id="fed-list" class="news"></div>
+        </section>
+
+        <!-- ROW 4 · 全球摘要 + 驗收鉤子 -->
+        <section class="cell c8 card">
+          <div class="cell-head">
+            <span class="eyebrow">全球經濟局勢 · P1</span>
+            <h2>一早摘要</h2>
+            <span class="cell-tag">3–5 點條列</span>
+          </div>
+          <ul id="summary-list" class="bullets"></ul>
+        </section>
+
+        <section class="cell c4 card value-prop">
+          <div class="cell-head"><span class="eyebrow">價值主張</span><h2>驗收鉤子</h2></div>
+          <p>
+            開盤前打開，<b>30 秒</b>內看懂：大盤氛圍、重點新聞、台積電動態，
+            以及關注個股<b>現在貴不貴</b> — 不用自己整理、不用自己算。
+          </p>
+        </section>
       </div>
     </main>
 
     <footer class="site-footer">
+      <p id="source-status" class="src-status"></p>
       <p>
         MVP · 資料由本機 JSON 提供 · 執行
         <code>python scripts/run_all.py</code> 更新 ·

@@ -1,65 +1,50 @@
 {
-  "updated_at": "2026-07-27T22:50:05+08:00",
+  "updated_at": "2026-07-28T07:55:00+08:00",
   "items": [
     {
       "rank": 1,
-      "title": "Kevin Warsh's Federal Reserve Just Issued an 11-Word Warning to Wall Street. Here's What History Says Comes Next.",
-      "summary": "Kevin Warsh's Federal Reserve Just Issued an 11-Word Warning to Wall Street. Here's What History Says Comes Next. &nbsp;&nbsp; The Motley F…",
-      "source": "Google News",
-      "url": "https://news.google.com/rss/articles/CBMilwFBVV95cUxOYTg0V1dtaGhJZHdvNjFobVBEUV9wZmlhTS1tZktZYWZEa2g5NVJpRWs4N0NDcWQtRTFXdUgzUWV3cnMzR1Q5TnItTXhmUkRLTG5SckJqbzlpc3YwV0NEYUF2QUhyUzB0VHNRTWgtM0hWV3J0VWtPaHVBcWcxRFUyT3lTRU50QjdTYnVGNlpKVWcwZ21JQjlR?oc=5",
-      "time": "2026-07-27T22:40:38+08:00",
-      "tags": [
-        "美股",
-        "重大"
-      ]
+      "title": "聯準會對華爾街發出「11 字警告」，歷史顯示接下來走勢",
+      "summary": "聯準會官員罕見以簡短措辭示警市場過熱，分析師回顧過往類似情境後的股市反應。",
+      "source": "Google 新聞",
+      "url": "https://news.google.com/",
+      "time": "2026-07-27T22:40:00+08:00",
+      "tags": ["美股", "重大"]
     },
     {
       "rank": 2,
-      "title": "Week ahead: Wall Street's biggest summer test is here with Big Tech, Fed on deck",
-      "summary": "Week ahead: Wall Street's biggest summer test is here with Big Tech, Fed on deck",
-      "source": "Yahoo Finance",
-      "url": "https://finance.yahoo.com/markets/stocks/articles/week-ahead-wall-streets-biggest-143000202.html",
+      "title": "本週大考：科技巨頭財報與 Fed 利率決議接連登場",
+      "summary": "本週為暑期最大考驗，多家科技權值股公布財報，市場同時聚焦聯準會利率決策。",
+      "source": "Google 新聞",
+      "url": "https://news.google.com/",
       "time": "2026-07-27T22:30:00+08:00",
-      "tags": [
-        "美股",
-        "重大"
-      ]
+      "tags": ["美股", "重大"]
     },
     {
       "rank": 3,
-      "title": "I Will Keep Buying Amazon After Wall Street Next ‘Capex Panic’ Drops The Stock Price",
-      "summary": "I Will Keep Buying Amazon After Wall Street Next ‘Capex Panic’ Drops The Stock Price",
-      "source": "Yahoo Finance",
-      "url": "https://finance.yahoo.com/markets/stocks/articles/keep-buying-amazon-wall-street-142647102.html",
-      "time": "2026-07-27T22:26:47+08:00",
-      "tags": [
-        "美股",
-        "重大"
-      ]
+      "title": "油價重挫逾 3%，美伊暫停攻擊點燃和談曙光",
+      "summary": "美方表示暫停對伊朗的攻擊以「給談判空間」，市場對地緣衝突降溫抱持期待，油價回落。",
+      "source": "Google 新聞",
+      "url": "https://news.google.com/",
+      "time": "2026-07-27T22:22:00+08:00",
+      "tags": ["國際", "重大"]
     },
     {
       "rank": 4,
-      "title": "Oil price dives as US and Iran pause attacks",
-      "summary": "The US says attacks on Iran have been halted to give \"talks some space\", raising hopes of a resolution to the conflict.",
-      "source": "BBC Business",
-      "url": "https://www.bbc.co.uk/news/articles/clyj834jn5lo?at_medium=RSS&at_campaign=rss",
-      "time": "2026-07-27T22:22:24+08:00",
-      "tags": [
-        "美股",
-        "重大"
-      ]
+      "title": "北京施壓台積電，多頭理由為何仍站得住腳",
+      "summary": "面對地緣政治雜音，法人認為台積電先進製程與 AI 需求仍是長線支撐。",
+      "source": "Google 新聞",
+      "url": "https://news.google.com/",
+      "time": "2026-07-27T22:08:00+08:00",
+      "tags": ["台股", "重大"]
     },
     {
       "rank": 5,
-      "title": "Beijing Just Aimed at Taiwan Semiconductor Manufacturing Company (NYSE:TSM). Here’s Why the Bull Case Still Wins",
-      "summary": "Beijing Just Aimed at Taiwan Semiconductor Manufacturing Company (NYSE:TSM). Here’s Why the Bull Case Still Wins",
-      "source": "Yahoo Finance",
-      "url": "https://finance.yahoo.com/markets/stocks/articles/beijing-just-aimed-taiwan-semiconductor-140827384.html",
-      "time": "2026-07-27T22:08:27+08:00",
-      "tags": [
-        "美股",
-        "重大"
-      ]
+      "title": "非農就業前瞻：勞動市場降溫幅度成本週焦點",
+      "summary": "市場等待週五非農數據，勞動市場降溫程度將左右聯準會後續降息路徑。",
+      "source": "Google 新聞",
+      "url": "https://news.google.com/",
+      "time": "2026-07-27T21:50:00+08:00",
+      "tags": ["美股", "重大"]
     }
   ]
 }

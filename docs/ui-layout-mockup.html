@@ -1,0 +1,430 @@
+<title>StarkLab News · 版面重新規劃</title>
+<style>
+  :root {
+    /* honor existing project palette (css/style.css) */
+    --bg: #eef0f3;
+    --surface: #ffffff;
+    --surface-2: #f7f8fa;
+    --ink: #1b2330;
+    --ink-soft: #46505f;
+    --muted: #79828f;
+    --line: #e3e6ea;
+    --line-soft: #eef0f3;
+    --accent: #2563a8;
+    --accent-soft: #e7f0f9;
+    --accent-ink: #1d4f87;
+    /* TW convention: red up / green down */
+    --up: #c62828;
+    --up-soft: #fbe9e9;
+    --down: #2e7d32;
+    --down-soft: #e6f0e7;
+    --warn: #b45309;
+    --warn-soft: #fdf2e1;
+    --p0: #2563a8;
+    --p1: #7c6f9a;
+    --shadow: 0 1px 2px rgba(20,30,45,.05), 0 1px 3px rgba(20,30,45,.04);
+    --r: 12px;
+    --font: "Noto Sans TC", system-ui, -apple-system, "Segoe UI", "Microsoft JhengHei", sans-serif;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #0e1319;
+      --surface: #191f29;
+      --surface-2: #141a23;
+      --ink: #e8edf4;
+      --ink-soft: #aeb9c6;
+      --muted: #7c8797;
+      --line: #29323f;
+      --line-soft: #222a35;
+      --accent: #5a9fe0;
+      --accent-soft: #17293c;
+      --accent-ink: #9cc6ee;
+      --up: #ef5f5f;
+      --up-soft: #2e1a1c;
+      --down: #4caf6a;
+      --down-soft: #16281c;
+      --warn: #d9932f;
+      --warn-soft: #2c2413;
+      --p0: #5a9fe0;
+      --p1: #a596c4;
+      --shadow: 0 1px 2px rgba(0,0,0,.3);
+    }
+  }
+  :root[data-theme="light"] {
+    --bg:#eef0f3;--surface:#fff;--surface-2:#f7f8fa;--ink:#1b2330;--ink-soft:#46505f;--muted:#79828f;
+    --line:#e3e6ea;--line-soft:#eef0f3;--accent:#2563a8;--accent-soft:#e7f0f9;--accent-ink:#1d4f87;
+    --up:#c62828;--up-soft:#fbe9e9;--down:#2e7d32;--down-soft:#e6f0e7;--warn:#b45309;--warn-soft:#fdf2e1;
+    --p0:#2563a8;--p1:#7c6f9a;--shadow:0 1px 2px rgba(20,30,45,.05),0 1px 3px rgba(20,30,45,.04);
+  }
+  :root[data-theme="dark"] {
+    --bg:#0e1319;--surface:#191f29;--surface-2:#141a23;--ink:#e8edf4;--ink-soft:#aeb9c6;--muted:#7c8797;
+    --line:#29323f;--line-soft:#222a35;--accent:#5a9fe0;--accent-soft:#17293c;--accent-ink:#9cc6ee;
+    --up:#ef5f5f;--up-soft:#2e1a1c;--down:#4caf6a;--down-soft:#16281c;--warn:#d9932f;--warn-soft:#2c2413;
+    --p0:#5a9fe0;--p1:#a596c4;--shadow:0 1px 2px rgba(0,0,0,.3);
+  }
+
+  * { box-sizing: border-box; }
+  body { margin:0; background:var(--bg); color:var(--ink); font-family:var(--font); line-height:1.5;
+    -webkit-font-smoothing:antialiased; }
+  .wrap { max-width:1180px; margin:0 auto; padding:0 18px 48px; }
+
+  /* ---- top bar ---- */
+  .topbar { background:linear-gradient(180deg,#1a2332,#161e2b); color:#e8edf4; border-bottom:3px solid var(--accent); }
+  .topbar .row { max-width:1180px; margin:0 auto; padding:16px 18px; display:flex; align-items:center;
+    gap:16px; flex-wrap:wrap; }
+  .brand { font-size:1.25rem; font-weight:800; letter-spacing:.01em; margin:0; color:#fff; }
+  .brand .dot { color:var(--accent); }
+  .tag { margin:2px 0 0; font-size:.82rem; color:#9fabbd; }
+  .status { margin-left:auto; display:flex; gap:8px 14px; align-items:center; flex-wrap:wrap; font-size:.76rem; color:#8a97a8; }
+  .status strong { color:#e8edf4; font-weight:600; }
+  .pill { display:inline-flex; align-items:center; gap:5px; padding:.2rem .6rem; border-radius:999px;
+    font-size:.72rem; font-weight:600; background:#1e3a2f; color:#86efac; border:1px solid #2d5a45; }
+  .pill::before { content:""; width:6px; height:6px; border-radius:50%; background:currentColor; }
+
+  /* ---- planning note strip ---- */
+  .note { display:flex; gap:12px 18px; align-items:center; flex-wrap:wrap; margin:18px 0 6px;
+    font-size:.8rem; color:var(--muted); }
+  .note b { color:var(--ink-soft); }
+  .legend { display:inline-flex; align-items:center; gap:6px; }
+  .chip { display:inline-flex; align-items:center; gap:5px; font-size:.68rem; font-weight:700; letter-spacing:.03em;
+    padding:.12rem .5rem; border-radius:5px; text-transform:uppercase; }
+  .chip.p0 { background:var(--accent-soft); color:var(--accent-ink); }
+  .chip.p1 { background:color-mix(in srgb, var(--p1) 16%, transparent); color:var(--p1); }
+  .chip.new { background:var(--warn-soft); color:var(--warn); }
+
+  /* ---- grid ---- */
+  .grid { display:grid; grid-template-columns:repeat(12,1fr); gap:14px; }
+  .card { grid-column:span 12; background:var(--surface); border:1px solid var(--line); border-radius:var(--r);
+    box-shadow:var(--shadow); padding:16px 17px; min-width:0; }
+  .c3{grid-column:span 3}.c4{grid-column:span 4}.c5{grid-column:span 5}
+  .c6{grid-column:span 6}.c7{grid-column:span 7}.c8{grid-column:span 8}
+
+  .card > header { display:flex; align-items:center; gap:8px; margin:0 0 12px; }
+  .eyebrow { font-size:.68rem; font-weight:700; letter-spacing:.06em; text-transform:uppercase; color:var(--muted); }
+  .card h2 { font-size:1rem; font-weight:700; margin:0; color:var(--ink); }
+  .card h2 .sub { font-size:.76rem; font-weight:500; color:var(--muted); margin-left:6px; }
+  .card > header .chip { margin-left:auto; }
+
+  /* ---- KPI cards ---- */
+  .kpi { padding:14px 15px; }
+  .kpi .name { font-size:.78rem; color:var(--muted); margin:0 0 6px; font-weight:500; }
+  .kpi .val { font-size:1.5rem; font-weight:800; margin:0; letter-spacing:-.01em; font-variant-numeric:tabular-nums; }
+  .kpi .chg { margin:4px 0 0; font-size:.82rem; font-weight:700; font-variant-numeric:tabular-nums; }
+  .kpi.up { border-top:3px solid var(--up); } .kpi.up .chg,.up-t { color:var(--up); }
+  .kpi.down { border-top:3px solid var(--down); } .kpi.down .chg,.down-t { color:var(--down); }
+
+  /* ---- hero valuation chart ---- */
+  .hero .toolbar { display:flex; align-items:center; gap:10px; flex-wrap:wrap; margin-bottom:12px; }
+  .lookup { display:flex; align-items:center; gap:0; border:1px solid var(--line); border-radius:8px;
+    overflow:hidden; background:var(--surface-2); }
+  .lookup input { border:0; background:transparent; padding:.5rem .7rem; font:inherit; font-size:.9rem;
+    color:var(--ink); width:120px; outline:none; }
+  .lookup button { border:0; background:var(--accent); color:#fff; padding:.5rem .9rem; font:inherit;
+    font-weight:600; font-size:.85rem; cursor:pointer; }
+  .seg { display:inline-flex; border:1px solid var(--line); border-radius:8px; overflow:hidden; }
+  .seg span { padding:.45rem .8rem; font-size:.82rem; font-weight:600; color:var(--muted); cursor:pointer; }
+  .seg span.on { background:var(--accent-soft); color:var(--accent-ink); }
+  .zone { margin-left:auto; display:inline-flex; align-items:center; gap:8px; font-size:.82rem; }
+  .zone .badge { padding:.25rem .7rem; border-radius:999px; font-weight:700; font-size:.8rem;
+    background:var(--warn-soft); color:var(--warn); border:1px solid color-mix(in srgb,var(--warn) 25%,transparent); }
+  .chartbox { position:relative; }
+  canvas { width:100%; height:300px; display:block; }
+  .bandkey { display:flex; gap:16px; flex-wrap:wrap; margin-top:10px; font-size:.75rem; color:var(--muted); }
+  .bandkey i { display:inline-block; width:22px; height:9px; border-radius:2px; vertical-align:middle; margin-right:6px; }
+
+  /* ---- news list ---- */
+  ol.news { list-style:none; margin:0; padding:0; display:flex; flex-direction:column; }
+  ol.news li { display:flex; gap:10px; padding:10px 0; border-bottom:1px solid var(--line-soft); }
+  ol.news li:last-child { border-bottom:0; }
+  .rank { flex:0 0 auto; width:22px; height:22px; border-radius:6px; background:var(--accent-soft);
+    color:var(--accent-ink); font-size:.74rem; font-weight:800; display:grid; place-items:center; }
+  .n-body { min-width:0; }
+  .n-title { font-size:.9rem; font-weight:600; color:var(--ink); text-decoration:none; line-height:1.4; }
+  .n-title:hover { color:var(--accent); }
+  .n-meta { margin-top:3px; font-size:.72rem; color:var(--muted); display:flex; gap:8px; flex-wrap:wrap; align-items:center; }
+  .src { padding:.05rem .4rem; border-radius:4px; background:var(--surface-2); border:1px solid var(--line-soft); }
+
+  .stance { display:inline-block; font-size:.68rem; font-weight:700; padding:.08rem .45rem; border-radius:4px; }
+  .stance.hawk { background:var(--up-soft); color:var(--up); }
+  .stance.dove { background:var(--down-soft); color:var(--down); }
+
+  /* bullet cards */
+  ul.bul { margin:0; padding-left:1.05rem; display:flex; flex-direction:column; gap:7px; font-size:.86rem; color:var(--ink-soft); }
+  ul.bul li::marker { color:var(--accent); }
+
+  /* event card */
+  .ev { display:grid; grid-template-columns:auto 1fr; gap:5px 14px; font-size:.86rem; }
+  .ev dt { color:var(--muted); margin:0; } .ev dd { margin:0; font-weight:600; font-variant-numeric:tabular-nums; }
+  .ev-head { display:flex; align-items:center; gap:8px; margin-bottom:8px; }
+  .ev-head .name { font-weight:700; } .await { font-size:.72rem; color:var(--warn); font-weight:600; }
+
+  .side { display:flex; flex-direction:column; gap:14px; }
+  .side > .card { grid-column:auto; }
+
+  footer.legend-foot { margin-top:26px; padding-top:16px; border-top:1px solid var(--line); font-size:.78rem;
+    color:var(--muted); display:flex; flex-wrap:wrap; gap:8px 20px; }
+
+  @media (max-width:900px){
+    .c3{grid-column:span 6}.c4,.c5{grid-column:span 6}.c7,.c8{grid-column:span 12}
+    .hero-wrap .c8,.hero-wrap .c4{grid-column:span 12}
+  }
+  @media (max-width:560px){
+    .c3,.c4,.c5,.c6,.c7{grid-column:span 12}
+    .kpi .val{font-size:1.3rem}
+    .zone{margin-left:0;width:100%}
+  }
+  @media (prefers-reduced-motion:reduce){ *{transition:none!important} }
+</style>
+
+<header class="topbar">
+  <div class="row">
+    <div>
+      <p class="brand">StarkLab<span class="dot"> News</span></p>
+      <p class="tag">不想花時間整理資訊 — 開盤前重點一站看完</p>
+    </div>
+    <div class="status">
+      <span>時段：<strong>台股開盤前整理時段</strong></span>
+      <span>更新：<strong>2026-07-28 07:58</strong></span>
+      <span class="pill">資料就緒</span>
+    </div>
+  </div>
+</header>
+
+<div class="wrap">
+
+  <div class="note">
+    <b>版面重新規劃</b>：把原本擠成一長條的內容，拆成獨立格子、依閱讀順序排列。
+    <span class="legend"><span class="chip p0">P0 保底</span></span>
+    <span class="legend"><span class="chip p1">P1 加分</span></span>
+    <span class="legend"><span class="chip new">需新增/修正</span></span>
+  </div>
+
+  <div class="grid">
+
+    <!-- ROW 1 · 市場總覽 KPI -->
+    <article class="card kpi up c3">
+      <header style="margin:0"><span class="eyebrow">市場總覽 · P0</span></header>
+      <p class="name">道瓊工業指數</p><p class="val">52,145</p><p class="chg">+198.01（+0.38%）</p>
+    </article>
+    <article class="card kpi down c3">
+      <header style="margin:0"><span class="eyebrow">市場總覽 · P0</span></header>
+      <p class="name">納斯達克</p><p class="val">24,872</p><p class="chg">−103.50（−0.41%）</p>
+    </article>
+    <article class="card kpi down c3">
+      <header style="margin:0"><span class="eyebrow">市場總覽 · P0</span></header>
+      <p class="name">S&amp;P 500</p><p class="val">7,403</p><p class="chg">−8.28（−0.11%）</p>
+    </article>
+    <article class="card kpi down c3">
+      <header style="margin:0"><span class="eyebrow">台積電 ADR · P0</span></header>
+      <p class="name">TSM（台積電 ADR）</p><p class="val">393.20</p><p class="chg">−9.00（−2.24%）</p>
+    </article>
+
+    <!-- ROW 2 · 主角估值河流圖 + 側欄 -->
+    <article class="card hero c8">
+      <header>
+        <span class="eyebrow">核心功能</span>
+        <h2>估值河流圖<span class="sub">本益比 / 淨值比 · 看現在貴不貴</span></h2>
+        <span class="chip new">主角 · 需重做</span>
+      </header>
+      <div class="toolbar">
+        <div class="lookup"><input value="2330 台積電" aria-label="輸入股票代碼"><button>查詢</button></div>
+        <div class="seg"><span class="on">本益比 PE</span><span>淨值比 PB</span></div>
+        <div class="zone">目前 <strong>PE 30.1</strong><span class="badge" style="background:var(--up-soft);color:var(--up);border:1px solid color-mix(in srgb,var(--up) 30%,transparent)">本益比 5 年高點</span></div>
+      </div>
+      <div class="chartbox"><canvas id="riverChart" width="820" height="300"></canvas></div>
+      <div class="bandkey">
+        <span><i style="background:#6aa4d8"></i>13.5 倍</span>
+        <span><i style="background:#92c0e6"></i>17.1 倍</span>
+        <span><i style="background:#bee0f0"></i>20.7 倍</span>
+        <span><i style="background:#f6d98a"></i>24.3 倍</span>
+        <span><i style="background:#f3ac93"></i>27.9 倍</span>
+        <span><i style="background:#ec8a90"></i>31.5 倍本益比</span>
+        <span><i style="background:#b5372f"></i>月均價</span>
+      </div>
+    </article>
+
+    <div class="side c4">
+      <article class="card">
+        <header>
+          <span class="eyebrow">關注事件 · P0</span>
+          <h2 style="font-size:.95rem">非農 / 月頻數據</h2>
+          <span class="chip p0">有資料才顯示</span>
+        </header>
+        <div class="ev-head"><span class="name">非農就業</span><span class="await">實際待公布</span></div>
+        <dl class="ev">
+          <dt>公布日</dt><dd>2026-08-01</dd>
+          <dt>預測</dt><dd>175,000</dd>
+          <dt>前值</dt><dd>206,000</dd>
+        </dl>
+      </article>
+
+      <article class="card">
+        <header>
+          <span class="eyebrow">大盤支撐原因 · P1</span>
+          <h2 style="font-size:.95rem">今日盤勢重點</h2>
+          <span class="chip p1">簡版條列</span>
+        </header>
+        <ul class="bul">
+          <li>科技權值財報優於預期，撐住指數。</li>
+          <li>油價回落緩解通膨疑慮。</li>
+          <li>Fed 利率決議前觀望，量能偏縮。</li>
+        </ul>
+      </article>
+    </div>
+
+    <!-- ROW 3 · 三個新聞格子 -->
+    <article class="card c5">
+      <header>
+        <span class="eyebrow">美國重大新聞 · P0</span>
+        <h2>前五大<span class="sub">中文標題 · 摘要</span></h2>
+        <span class="chip new">需中文化</span>
+      </header>
+      <ol class="news">
+        <li><span class="rank">1</span><div class="n-body">
+          <a class="n-title">聯準會對華爾街發出 11 字警告，歷史顯示接下來…</a>
+          <div class="n-meta"><span class="src">Yahoo 財經</span><span>07-27 22:40</span></div></div></li>
+        <li><span class="rank">2</span><div class="n-body">
+          <a class="n-title">本週大考：科技巨頭財報與 Fed 利率決議接連登場</a>
+          <div class="n-meta"><span class="src">Yahoo 財經</span><span>07-27 22:30</span></div></div></li>
+        <li><span class="rank">3</span><div class="n-body">
+          <a class="n-title">油價重挫，美伊暫停攻擊點燃和談曙光</a>
+          <div class="n-meta"><span class="src">BBC 商業</span><span>07-27 22:22</span></div></div></li>
+        <li><span class="rank">4</span><div class="n-body">
+          <a class="n-title">北京施壓台積電，多頭理由為何仍站得住</a>
+          <div class="n-meta"><span class="src">Yahoo 財經</span><span>07-27 22:08</span></div></div></li>
+        <li><span class="rank">5</span><div class="n-body">
+          <a class="n-title">非農就業前瞻：勞動市場降溫幅度成焦點</a>
+          <div class="n-meta"><span class="src">路透</span><span>07-27 21:50</span></div></div></li>
+      </ol>
+    </article>
+
+    <article class="card c4">
+      <header>
+        <span class="eyebrow">TSMC 個股新聞 · P0</span>
+        <h2>台積電專區</h2>
+        <span class="chip new">需新增區塊</span>
+      </header>
+      <ol class="news">
+        <li><span class="rank">•</span><div class="n-body">
+          <a class="n-title">台積電 2 奈米傳提前量產，訂單能見度看到明年</a>
+          <div class="n-meta"><span class="src">鉅亨網</span><span>07-27 21:10</span></div></div></li>
+        <li><span class="rank">•</span><div class="n-body">
+          <a class="n-title">CoWoS 產能再擴，AI 客戶追加拉貨</a>
+          <div class="n-meta"><span class="src">工商時報</span><span>07-27 20:30</span></div></div></li>
+        <li><span class="rank">•</span><div class="n-body">
+          <a class="n-title">外資調升台積電目標價，維持買進評等</a>
+          <div class="n-meta"><span class="src">經濟日報</span><span>07-27 19:05</span></div></div></li>
+      </ol>
+    </article>
+
+    <article class="card c3">
+      <header>
+        <span class="eyebrow">聯準會發言 · P1</span>
+        <h2>Fed 重點</h2>
+        <span class="chip new">原「川普」改此</span>
+      </header>
+      <ol class="news">
+        <li><div class="n-body">
+          <a class="n-title">主席：抗通膨仍需保持耐心</a>
+          <div class="n-meta"><span class="stance hawk">偏鷹</span><span>07-27</span></div></div></li>
+        <li><div class="n-body">
+          <a class="n-title">理事：勞動市場已明顯降溫</a>
+          <div class="n-meta"><span class="stance dove">偏鴿</span><span>07-26</span></div></div></li>
+        <li><div class="n-body">
+          <a class="n-title">會議紀要：年內或有一次降息空間</a>
+          <div class="n-meta"><span class="stance dove">偏鴿</span><span>07-25</span></div></div></li>
+      </ol>
+    </article>
+
+    <!-- ROW 4 · 全球經濟摘要 -->
+    <article class="card c8">
+      <header>
+        <span class="eyebrow">全球經濟局勢 · P1</span>
+        <h2>一早摘要<span class="sub">3–5 點條列</span></h2>
+        <span class="chip p1">加分</span>
+      </header>
+      <ul class="bul">
+        <li>美股四大指數收盤漲跌互見，市場等待本週 Fed 決議與科技財報。</li>
+        <li>10 年期公債殖利率回落至 4.1%，反映降息預期升溫。</li>
+        <li>國際油價下跌逾 3%，地緣風險暫緩。</li>
+        <li>美元指數走弱，非美貨幣普遍反彈。</li>
+      </ul>
+    </article>
+
+    <article class="card c4" style="display:flex;flex-direction:column;justify-content:center">
+      <header><span class="eyebrow">價值主張</span><h2 style="font-size:.95rem">驗收鉤子</h2></header>
+      <p style="margin:0;font-size:.88rem;color:var(--ink-soft)">
+        開盤前打開，<b style="color:var(--ink)">30 秒</b>內看懂：大盤氛圍、重點新聞、台積電動態，
+        以及關注個股<b style="color:var(--ink)">現在貴不貴</b> — 不用自己整理、不用自己算。
+      </p>
+    </article>
+
+  </div>
+
+  <footer class="legend-foot">
+    <span><span class="chip p0">P0</span> 保底必達：市場總覽、重大新聞（中文）、TSMC 專區、非農事件</span>
+    <span><span class="chip p1">P1</span> 加分：估值圖切換、聯準會發言、全球摘要、大盤支撐簡版</span>
+    <span><span class="chip new">修正</span> 新聞中文化 · 新增 TSMC 格 · 川普→聯準會 · 河流圖改估值版</span>
+  </footer>
+</div>
+
+<script>
+(function(){
+  var c = document.getElementById('riverChart');
+  if(!c) return;
+  var dpr = Math.min(window.devicePixelRatio||1, 2);
+  function css(v){ return getComputedStyle(document.documentElement).getPropertyValue(v).trim(); }
+  function draw(){
+    var rect = c.getBoundingClientRect();
+    var W = rect.width, H = rect.height;
+    c.width = W*dpr; c.height = H*dpr;
+    var ctx = c.getContext('2d'); ctx.setTransform(dpr,0,0,dpr,0,0);
+    ctx.clearRect(0,0,W,H);
+    var padL=8, padR=8, padT=14, padB=18;
+    var n=60, i, k, NL=6;
+    var surface=css('--surface');
+    // 6 條等距本益比倍數線（藍→粉），股價在色帶內
+    var pel=[13.5,17.1,20.7,24.3,27.9,31.5];
+    var eps=[], price=[], lines=[];
+    for(k=0;k<NL;k++) lines[k]=[];
+    for(i=0;i<n;i++){
+      eps[i]=40+i*0.14;
+      for(k=0;k<NL;k++) lines[k][i]=pel[k]*eps[i];
+      var pc=19 + i*0.17 + Math.sin(i/8)*1.6 + (i>44?(i-44)*0.12:0); // 收盤本益比 ~19→~29
+      price[i]=pc*eps[i];
+    }
+    var all=lines[0].concat(lines[NL-1], price);
+    var min=Math.min.apply(null,all), max=Math.max.apply(null,all);
+    var span=max-min; min-=span*0.06; max+=span*0.04;
+    function X(j){ return padL + (W-padL-padR) * (j/(n-1)); }
+    function Y(v){ return padT + (H-padT-padB) * (1-(v-min)/(max-min)); }
+    function bandFill(top,bot,color){
+      ctx.beginPath(); ctx.moveTo(X(0),Y(top[0]));
+      for(i=1;i<n;i++) ctx.lineTo(X(i),Y(top[i]));
+      for(i=n-1;i>=0;i--) ctx.lineTo(X(i),Y(bot[i]));
+      ctx.closePath(); ctx.fillStyle=color; ctx.fill();
+    }
+    var fills=['rgba(106,164,216,0.42)','rgba(146,192,230,0.40)','rgba(190,222,240,0.42)','rgba(248,224,146,0.46)','rgba(242,168,150,0.48)'];
+    for(k=0;k<NL-1;k++) bandFill(lines[k+1], lines[k], fills[k]);
+    // 月均價（沉穩暗紅）
+    var priceC='#b5372f';
+    ctx.beginPath();
+    for(i=0;i<n;i++){ var x=X(i),y=Y(price[i]); i?ctx.lineTo(x,y):ctx.moveTo(x,y); }
+    ctx.strokeStyle=priceC; ctx.lineWidth=2.4; ctx.stroke();
+    // 現價標記 + 標籤
+    var lx=X(n-1), ly=Y(price[n-1]);
+    ctx.beginPath(); ctx.arc(lx,ly,4.5,0,7); ctx.fillStyle=priceC; ctx.fill();
+    ctx.strokeStyle=surface; ctx.lineWidth=2; ctx.stroke();
+    var txt='現價 '+Math.round(price[n-1]);
+    ctx.font='700 12px system-ui, sans-serif';
+    var tw=ctx.measureText(txt).width, bx=lx-tw-18, by=ly-9;
+    ctx.globalAlpha=0.9; ctx.fillStyle=surface; ctx.fillRect(bx-5,by-2,tw+10,18); ctx.globalAlpha=1;
+    ctx.fillStyle=priceC; ctx.textBaseline='top'; ctx.fillText(txt,bx,by);
+  }
+  draw();
+  var t; window.addEventListener('resize', function(){ clearTimeout(t); t=setTimeout(draw,120); });
+  var mq = window.matchMedia('(prefers-color-scheme: dark)');
+  (mq.addEventListener?mq.addEventListener.bind(mq,'change'):null) && mq.addEventListener('change',draw);
+  new MutationObserver(draw).observe(document.documentElement,{attributes:true,attributeFilter:['data-theme']});
+})();
+</script>
