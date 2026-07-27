@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="個股資訊整合平台 — 市場總覽、重大新聞、河流圖" />
+    <title>StarkLab News | 個股資訊整合</title>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css"
+    />
+    <link rel="stylesheet" href="css/style.css" />
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="container">
+        <h1>StarkLab News</h1>
+        <p class="tagline">不想花時間整理資訊 — 開盤前重點一站看完</p>
+        <div class="meta-bar">
+          <span>資料更新：<strong id="global-updated">載入中…</strong></span>
+          <span>時段：<strong id="session-label">—</strong></span>
+          <span id="freshness-badge" class="badge">檢查中</span>
+        </div>
+      </div>
+    </header>
+
+    <main class="container">
+      <!-- Market -->
+      <div class="section-title">
+        <h2>市場總覽</h2>
+        <span class="hint">大盤 / 台積電 ADR</span>
+      </div>
+      <div id="market-status" class="state-box" hidden></div>
+      <div id="market-cards" class="cards" aria-live="polite"></div>
+
+      <!-- News -->
+      <div class="section-title">
+        <h2>重大新聞 · 前五大</h2>
+        <span class="hint">標題 · 摘要 · 來源</span>
+      </div>
+      <div id="news-status" class="state-box" hidden></div>
+      <div id="news-list" class="panel" aria-live="polite"></div>
+
+      <!-- Events (conditional) -->
+      <section id="events-section" hidden>
+        <div class="section-title">
+          <h2>關注事件</h2>
+          <span class="hint">有資料才顯示</span>
+        </div>
+        <div id="events-status" class="state-box" hidden></div>
+        <div id="events-list" class="events-grid"></div>
+      </section>
+
+      <!-- River chart -->
+      <div class="section-title">
+        <h2 id="chart-title">河流圖</h2>
+        <span class="hint">收盤 + MA5 / MA20 / MA60</span>
+      </div>
+      <div id="chart-status" class="state-box" hidden></div>
+      <div class="chart-panel">
+        <div id="river-chart" role="img" aria-label="個股均線河流圖"></div>
+      </div>
+    </main>
+
+    <footer class="site-footer">
+      <p>
+        MVP · 資料由本機 JSON 提供 · 執行
+        <code>python scripts/run_all.py</code> 更新 ·
+        <a href="docs/排程設定.md">排程說明</a>
+      </p>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/echarts@5/dist/echarts.min.js"></script>
+    <script src="js/app.js"></script>
+  </body>
+</html>

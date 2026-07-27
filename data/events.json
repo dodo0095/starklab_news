@@ -1,0 +1,25 @@
+{
+  "updated_at": "2026-07-27T22:50:07+08:00",
+  "events": [
+    {
+      "name": "非農就業",
+      "date": "2026-08-07",
+      "actual": null,
+      "forecast": 175000,
+      "previous": 206000,
+      "unit": "人",
+      "note": "美國非農就業報告（預估日程，請依官方確認）",
+      "visible": true
+    },
+    {
+      "name": "非農就業",
+      "date": "2026-09-04",
+      "actual": null,
+      "forecast": null,
+      "previous": null,
+      "unit": "人",
+      "note": "預估日程",
+      "visible": false
+    }
+  ]
+}

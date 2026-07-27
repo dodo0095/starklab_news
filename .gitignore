@@ -1,2 +1,14 @@
 .claude/
 .knowledge/
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+logs/
+data/*.tmp
+*.log
+.DS_Store
+Thumbs.db
+# keep logs folder, ignore contents
+!logs/.gitkeep
+
