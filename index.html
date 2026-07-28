@@ -30,18 +30,15 @@
         <!-- ROW 1 · 市場總覽 + 消息面熱度 -->
         <section class="cell c8">
           <div class="cell-head">
-            <span class="eyebrow">市場總覽 · 美股 / 國際</span>
-            <h2>道瓊 / 那斯達克 / S&amp;P 500 / 台積電 ADR</h2>
+            <span class="eyebrow">市場總覽 · P0</span>
+            <h2 id="market-title">美股 / 國際</h2>
+            <div class="seg" id="market-seg" role="tablist">
+              <span data-mkt="us" class="on" role="tab">美股</span>
+              <span data-mkt="tw" role="tab">台股</span>
+            </div>
           </div>
           <div id="market-status" class="state-box" hidden></div>
           <div id="market-cards" class="cards" aria-live="polite"></div>
-
-          <div class="cell-head market-tw-head">
-            <span class="eyebrow">台股</span>
-            <h2>加權指數 / 櫃買 / 0050 / 台積電</h2>
-          </div>
-          <div id="market-tw-status" class="state-box" hidden></div>
-          <div id="market-tw-cards" class="cards" aria-live="polite"></div>
         </section>
 
         <section class="cell c4 card heat-card">
