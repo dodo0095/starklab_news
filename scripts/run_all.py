@@ -14,6 +14,7 @@ SCRIPTS = [
     "fetch_events.py",       # 非農等條件事件 P0
     "fetch_fed.py",          # 聯準會發言重點 P1（原川普）
     "fetch_stock_ma.py",     # 均線河流圖（P1，保留為另一種檢視模式）
+    "fetch_heat.py",         # 消息面熱度（需最後跑，讀上面各 JSON 合成）
 ]
 
 

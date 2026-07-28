@@ -87,7 +87,7 @@ function setGlobalMeta(updatedList, statusRes) {
 const SOURCE_NAME = {
   "fetch_market.py": "市場", "fetch_news.py": "新聞", "fetch_tsmc_news.py": "TSMC",
   "fetch_valuation.py": "本益比", "fetch_events.py": "事件", "fetch_fed.py": "Fed",
-  "fetch_stock_ma.py": "均線",
+  "fetch_stock_ma.py": "均線", "fetch_heat.py": "熱度",
 };
 function renderSourceStatus(statusRes) {
   const el = $("#source-status");
@@ -179,6 +179,37 @@ function renderBullets(result, rootSel, key) {
   const arr = result.data[key] || [];
   root.innerHTML = arr.length ? arr.map((t) => `<li>${escapeHtml(t)}</li>`).join("") : `<li>目前無內容。</li>`;
   return result.data.updated_at;
+}
+
+/* ---------- 消息面熱度（情緒溫度計） ---------- */
+function renderHeat(result) {
+  const status = $("#heat-status");
+  const gEl = $("#heat-gauge");
+  const dEl = $("#heat-drivers");
+  if (!gEl) return null;
+  if (!result.ok || !result.data) { setStatus(status, "note", "熱度資料暫不可用。"); gEl.style.display = "none"; return null; }
+  const d = result.data;
+  const score = typeof d.score === "number" ? d.score : 50;
+  const level = d.level || "—";
+  gEl.style.display = "block";
+  const chart = echarts.getInstanceByDom(gEl) || echarts.init(gEl);
+  chart.setOption({
+    series: [{
+      type: "gauge", min: 0, max: 100, startAngle: 200, endAngle: -20, radius: "96%", center: ["50%", "60%"],
+      axisLine: { lineStyle: { width: 13, color: [[0.2, "#4a90d9"], [0.4, "#7bb0d8"], [0.6, "#cbb46a"], [0.8, "#e0975a"], [1, "#d24b46"]] } },
+      pointer: { width: 5, length: "60%", itemStyle: { color: "#1b2330" } },
+      anchor: { show: true, size: 10, itemStyle: { color: "#1b2330" } },
+      axisTick: { show: false }, splitLine: { length: 11, lineStyle: { color: "#fff", width: 2 } }, axisLabel: { show: false },
+      title: { show: false },
+      detail: { valueAnimation: true, offsetCenter: [0, "34%"], formatter: () => `${level}  ${score}`, fontSize: 15, fontWeight: 700, color: "#1b2330" },
+      data: [{ value: score }],
+    }],
+  }, true);
+  window.addEventListener("resize", () => chart.resize());
+  const demo = d.demo ? '<span class="demo-tag">示範</span>' : "";
+  dEl.innerHTML = (d.drivers || []).map((x) => `<span class="chip">${escapeHtml(x)}</span>`).join("") + demo;
+  status.hidden = true;
+  return d.updated_at;
 }
 
 /* ---------- Events ---------- */
@@ -382,7 +413,7 @@ async function main() {
   $("#session-label").textContent = guessSession();
   wireControls();
 
-  const [market, news, tsmc, valuation, events, fed, summary, status] = await Promise.all([
+  const [market, news, tsmc, valuation, events, fed, summary, heat, status] = await Promise.all([
     loadJSON("data/market.json"),
     loadJSON("data/news.json"),
     loadJSON("data/tsmc_news.json"),
@@ -390,11 +421,13 @@ async function main() {
     loadJSON("data/events.json"),
     loadJSON("data/fed.json"),
     loadJSON("data/summary.json"),
+    loadJSON("data/heat.json"),
     loadJSON("data/status.json"),
   ]);
 
   const updated = [
     renderMarket(market),
+    renderHeat(heat),
     renderNewsList(news, "#news-list", "#news-status", { rank: true, limit: 5, label: "重大新聞" }),
     renderNewsList(tsmc, "#tsmc-list", "#tsmc-status", { limit: 6, label: "台積電新聞" }),
     renderValuation(valuation),

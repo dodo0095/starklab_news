@@ -27,14 +27,25 @@
 
     <main class="container">
       <div class="grid">
-        <!-- ROW 1 · 市場總覽 -->
-        <section class="cell c12">
+        <!-- ROW 1 · 市場總覽 + 消息面熱度 -->
+        <section class="cell c8">
           <div class="cell-head">
             <span class="eyebrow">市場總覽 · P0</span>
             <h2>大盤 / 台積電 ADR</h2>
           </div>
           <div id="market-status" class="state-box" hidden></div>
           <div id="market-cards" class="cards" aria-live="polite"></div>
+        </section>
+
+        <section class="cell c4 card heat-card">
+          <div class="cell-head">
+            <span class="eyebrow">消息面熱度</span>
+            <h2>情緒溫度計</h2>
+          </div>
+          <div id="heat-status" class="state-box" hidden></div>
+          <div id="heat-gauge" role="img" aria-label="消息面情緒溫度計"></div>
+          <div id="heat-drivers" class="heat-drivers"></div>
+          <p class="heat-note">參考情緒指標，非投資建議</p>
         </section>
 
         <!-- ROW 2 · 主角：本益比河流圖 + 側欄 -->

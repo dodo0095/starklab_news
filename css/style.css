@@ -152,6 +152,14 @@ main.container { max-width: 1180px; margin: 0 auto; padding: 0 1.1rem 2.5rem; }
 .band-key { display: flex; gap: 14px; flex-wrap: wrap; margin-top: 0.6rem; font-size: 0.74rem; color: var(--muted); }
 .band-key i { display: inline-block; width: 20px; height: 9px; border-radius: 2px; vertical-align: middle; margin-right: 5px; }
 
+/* ---- Heat gauge ---- */
+.heat-card { display: flex; flex-direction: column; }
+#heat-gauge { width: 100%; height: 165px; }
+.heat-drivers { display: flex; flex-wrap: wrap; gap: 6px; justify-content: center; margin-top: 2px; }
+.heat-drivers .chip { background: var(--accent-soft); color: var(--accent-ink); border-radius: 999px; padding: 0.15rem 0.55rem; font-size: 0.74rem; font-weight: 600; }
+.heat-drivers .demo-tag { color: var(--up); font-weight: 700; align-self: center; }
+.heat-note { margin: 0.5rem 0 0; text-align: center; font-size: 0.7rem; color: var(--muted); }
+
 /* ---- Side ---- */
 .side { display: flex; flex-direction: column; gap: 14px; }
 
