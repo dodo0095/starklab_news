@@ -128,33 +128,17 @@ function renderIndexRow(indices, rootSel, statusSel, updatedAt, emptyMsg) {
   root.innerHTML = indices.map(indexCardHtml).join("");
 }
 
-let marketState = null;
-let currentMkt = "us"; // us | tw
-
-function renderMarketGroup(which) {
-  currentMkt = which;
-  const d = marketState;
-  if (!d) return;
-  const isTw = which === "tw";
-  const titleEl = $("#market-title");
-  if (titleEl) titleEl.textContent = isTw ? "台股" : "美股 / 國際";
-  const arr = (isTw ? d.tw_indices : d.indices) || [];
-  const empty = isTw
-    ? "資料更新中 — 請執行 fetch_market.py 取得台股資料。"
-    : "資料更新中 — 尚無美股指數。";
-  renderIndexRow(arr, "#market-cards", "#market-status", d.updated_at, empty);
-}
-
 function renderMarket(result) {
   if (!result.ok || !result.data) {
     $("#market-cards").innerHTML = "";
     setStatus($("#market-status"), "error", "市場資料載入失敗，請執行資料更新腳本或稍後重試。");
-    marketState = null;
+    setStatus($("#market-tw-status"), "note", "台股資料暫不可用。");
     return null;
   }
-  marketState = result.data;
-  renderMarketGroup(currentMkt);
-  return result.data.updated_at;
+  const data = result.data;
+  renderIndexRow(data.indices || [], "#market-cards", "#market-status", data.updated_at, "資料更新中 — 尚無美股指數。");
+  renderIndexRow(data.tw_indices || [], "#market-tw-cards", "#market-tw-status", data.updated_at, "資料更新中 — 請執行 fetch_market.py 取得台股資料。");
+  return data.updated_at;
 }
 
 /* ---------- 新聞清單（共用） ---------- */
@@ -413,18 +397,6 @@ function wireControls() {
   }
   if (go) go.addEventListener("click", query);
   if (input) input.addEventListener("keydown", (e) => { if (e.key === "Enter") query(); });
-
-  // 市場總覽 美股/台股 切換
-  const mseg = $("#market-seg");
-  if (mseg) {
-    mseg.querySelectorAll("span").forEach((sp) => {
-      sp.addEventListener("click", () => {
-        mseg.querySelectorAll("span").forEach((x) => x.classList.remove("on"));
-        sp.classList.add("on");
-        renderMarketGroup(sp.dataset.mkt);
-      });
-    });
-  }
 
   const seg = $("#val-metric");
   if (seg) {

@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-07-28T12:39:33+08:00",
+  "updated_at": "2026-07-28T15:54:01+08:00",
   "session": "pre-us-open",
   "indices": [
     {
@@ -30,5 +30,31 @@
       "change": -3.11,
       "change_pct": -0.7732
     }
+  ],
+  "tw_indices": [
+    {
+      "name": "加權指數",
+      "symbol": "^TWII",
+      "value": 41603.3594,
+      "change": -2030.832,
+      "change_pct": -4.6542
+    },
+    {
+      "name": "元大台灣50",
+      "symbol": "0050.TW",
+      "value": 97.15,
+      "change": -4.35,
+      "change_pct": -4.2857
+    },
+    {
+      "name": "台積電",
+      "symbol": "2330.TW",
+      "value": 2280.0,
+      "change": -75.0,
+      "change_pct": -3.1847
+    }
+  ],
+  "partial_errors": [
+    "^TWOII: no history for ^TWOII"
   ]
 }
