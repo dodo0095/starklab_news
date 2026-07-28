@@ -1,7 +1,7 @@
 {
-  "ran_at": "2026-07-28T12:36:26+08:00",
-  "ok": false,
-  "ok_count": 5,
+  "ran_at": "2026-07-28T12:39:41+08:00",
+  "ok": true,
+  "ok_count": 8,
   "total": 8,
   "sources": [
     {
@@ -10,11 +10,11 @@
     },
     {
       "script": "fetch_news.py",
-      "ok": false
+      "ok": true
     },
     {
       "script": "fetch_tsmc_news.py",
-      "ok": false
+      "ok": true
     },
     {
       "script": "fetch_valuation.py",
@@ -26,7 +26,7 @@
     },
     {
       "script": "fetch_fed.py",
-      "ok": false
+      "ok": true
     },
     {
       "script": "fetch_stock_ma.py",

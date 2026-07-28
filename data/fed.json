@@ -1,26 +1,40 @@
 {
-  "updated_at": "2026-07-28T07:55:00+08:00",
+  "updated_at": "2026-07-28T12:39:39+08:00",
   "items": [
     {
-      "title": "聯準會主席：抗通膨仍需保持耐心，不急於降息",
-      "source": "Google 新聞",
-      "url": "https://news.google.com/",
-      "time": "2026-07-27T09:00:00+08:00",
+      "title": "Fed決策前夕迷霧重重 川普：我知道華許想降息",
+      "source": "Yahoo股市",
+      "url": "https://news.google.com/rss/articles/CBMiugJBVV95cUxPbHBwbW9fb0NEOVFYWjJNTzRMX05HcVpwamcwX2tyS3RLRDhZU1JSaXlXbmRMOE40b0hxdk9yZUlzR2F5TTB5YTRvOGVjVkNMWkhHaFY3RnluTXBaS1E0bFE2ajN6bDlMQW8tRXJHWFhiRWRVbXUyYm9Bb2N5Ym85ZTVvNmlnRTQ3NEg1NzhHNTBCbGpGWWl5dzdHREUxYlZQclFxRHRFT1pQT20yNUJSY0o4UlB0VWZJNzlnNG8xTXR0Zk91X0xYUUt2b1kyY2NVUXRramNEeWhYM2ktZEpjS01qTDV1UFBEU05HTnAwbzJDcFhpR2FhYXNwVUlJSXlFZ0hpeDNSUlRGSl9WRVN0RS1XRmFWWHMwWW0zWHJoMk9RcFNPTV9JSkp5Uk9zcDQzbWtuTDJ0NTJpZw?oc=5",
+      "time": "2026-07-28T12:07:30+08:00",
+      "stance": "dove"
+    },
+    {
+      "title": "AI 利空連發 華許升息機率提高 記憶體、被動元件、矽晶圓慘跌",
+      "source": "UDN",
+      "url": "https://news.google.com/rss/articles/CBMiUEFVX3lxTE9uVkxpQUxxZXAzQnZKdWlvM0RaVTN5OTBlN1dDMmRIeHZxT2REMWN2ZGpWNldXWTcxcExyZ19RTk4zRTVvTGpLYnFZc2RjUjh00gFWQVVfeXFMT0FZZnMxcW04aHhCaGZvcjhqY25qNWRLZGUyVUplc2tpanpYcHBGNnBTeWxBUzI4b2dkN1R2VE92dEhfZDdZeUx3OTQ3alh5N1FmN3NHSEE?oc=5",
+      "time": "2026-07-28T11:55:33+08:00",
       "stance": "hawk"
     },
     {
-      "title": "聯準會理事：勞動市場已明顯降溫",
-      "source": "Google 新聞",
-      "url": "https://news.google.com/",
-      "time": "2026-07-26T14:00:00+08:00",
-      "stance": "dove"
+      "title": "城堡證券押注Fed 週三意外升息：市場恐怕看扁了聯準會這次偏鷹的決心| 動區動趨-最具影響力的區塊鏈新聞媒體",
+      "source": "動區動趨",
+      "url": "https://news.google.com/rss/articles/CBMinAFBVV95cUxQUGhJTmNnTEFFNjdCUlhDTlRGOWc4R2EySUk5YkxrZU5KblVqUTROWkphd1d1X3RwdWZwYzFudENJUEtWVklHeXBCYzRlR0IzdmxTRk0tY2FpRG5tYjQ2RnVrdWJWUGxBYlVHZUhsV3QwVlZBMUhCb0w1NllSdjRSd3FoVGpfQlhDcDF0VTRJcDE1dkNncHl0UGhDOFk?oc=5",
+      "time": "2026-07-28T11:08:39+08:00",
+      "stance": "hawk"
     },
     {
-      "title": "FOMC 會議紀要：年內或仍有一次降息空間",
-      "source": "Google 新聞",
-      "url": "https://news.google.com/",
-      "time": "2026-07-25T02:00:00+08:00",
-      "stance": "dove"
+      "title": "《DJ Insight》聯準會決議前夕的資金緊縮：為何台積電股價成首波犧牲品？",
+      "source": "台視全球資訊網",
+      "url": "https://news.google.com/rss/articles/CBMiqwFBVV95cUxQX1Fkc2xXWng1WXAtT1g3aG5OUGFoaC1US0g4TERnY1dMQjZyeU5oeVVhdmVGVFYxVjlXLUZQOHB0RlVlalh4ZmM3ZkZ6UmRRei1wa0s4d2tjY19PQUZvR3FBNlBhdUxOQVRQSGJQbTB3M00zMmoyT2VDUGpXMjc2cFMwLUd0U1dYcVJ5TVQ1dUstcXRmSWRiLXVwN3IwQTJUQkt1YUZqNEJveVk?oc=5",
+      "time": "2026-07-28T10:39:38+08:00",
+      "stance": "hawk"
+    },
+    {
+      "title": "財報週與升息同台拚場：資本支出能否說服市場回頭買單？",
+      "source": "台視全球資訊網",
+      "url": "https://news.google.com/rss/articles/CBMiqwFBVV95cUxQTXF0Tlo4VGpScXg4aUVyb2h6QWhfUTVPOHdvTDdXMVhua0xEWXJ2YUMtajZvdE81bVJNUEpkLTVSVDl2RENoWnpOb1NsZlJtNjVmVDNUeERRVFZsXzMxR3lsRUNMNEFaLThpR1VpaWc2NlNWekRFbHNuNHV2ZDFqMURuSHMtdmNDNGlDWTh1Tmo0Q0kzTml5MEhYWkl5a3ZrUFY5R1JlY1lpU2M?oc=5",
+      "time": "2026-07-28T10:39:37+08:00",
+      "stance": "hawk"
     }
   ]
 }

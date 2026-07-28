@@ -1,8 +1,9 @@
 """Fetch top financial headlines via public RSS → data/news.json
 
 來源改為中文財經（決策 A：不用金十，走中文 RSS，2026-07-28）。
-主幹：Google 新聞 zh-TW（穩定、必為中文），輔以鉅亨網 headline RSS。
-中文源本身即中文標題/摘要，省去翻譯。Jin10 若日後有 key 再接（P1）。
+全部走 Google 新聞 zh-TW（穩定、必為中文）。
+已移除鉅亨 headline RSS —— 它會混入大量「盤中速報／急拉急跌」個股跳動快訊，非重大財經新聞。
+另加噪音過濾，直接濾掉個股速報。Jin10 若日後有 key 再接（P1）。
 """
 
 from __future__ import annotations
@@ -28,11 +29,10 @@ def _gnews(query: str) -> str:
 
 
 FEEDS = [
-    # 主幹：Google 新聞 zh-TW，保證中文、穩定
-    ("Google 新聞", _gnews("美股 OR 台股 OR 華爾街 OR 那斯達克 OR 道瓊 when:1d")),
-    ("Google 新聞", _gnews("(聯準會 OR Fed OR 通膨 OR 利率 OR 非農) when:1d")),
-    # 輔助：鉅亨網頭條（若暫時失效不影響主幹）
-    ("鉅亨網", "https://news.cnyes.com/rss/v1/news/category/headline"),
+    # 全為 Google 新聞 zh-TW：穩定、必中文，且避開個股「盤中速報」雜訊
+    ("Google 新聞", _gnews("(美股 OR 華爾街 OR 那斯達克 OR 道瓊 OR 標普) when:1d")),
+    ("Google 新聞", _gnews("(聯準會 OR Fed OR 通膨 OR 利率 OR 非農 OR 財報) when:1d")),
+    ("Google 新聞", _gnews("(全球經濟 OR 台股 OR 加權指數 OR 台積電 OR 半導體) when:1d")),
 ]
 
 # 重大 / 總經主題 — 加權（中文為主，保留英文以防中英混雜來源）
@@ -47,9 +47,15 @@ KEYWORDS_MAJOR = re.compile(
 
 # 個股推銷 / 標的推薦式 — 降權
 KEYWORDS_PITCH = re.compile(
-    r"存股|抱緊|飆股|漲停|買進評等|目標價上看|該不該買|報明牌|明牌|"
+    r"存股|抱緊|飆股|買進評等|目標價上看|該不該買|報明牌|明牌|"
     r"\b(top|best) (stock|stocks) to (buy|watch)\b|\bshould you buy\b",
     re.I,
+)
+
+# 個股跳動快訊（盤中速報等）— 直接濾除，不進清單
+KEYWORDS_NOISE = re.compile(
+    r"盤中速報|盤後速報|盤中零股|速報|急拉|急殺|急跌|急漲|委買|委賣|"
+    r"漲停|跌停|鎖死|跳空|成交\d+張|近\d+日股價|三大法人買賣超"
 )
 
 
@@ -120,6 +126,10 @@ def fetch_entries() -> list[dict]:
             for entry in feed.entries[:25]:
                 title = strip_html(entry.get("title") or "")
                 if not title:
+                    continue
+                # 濾掉個股跳動快訊（盤中速報等），不進清單
+                noise_blob = f"{title} {strip_html(entry.get('summary') or entry.get('description') or '')}"
+                if KEYWORDS_NOISE.search(noise_blob):
                     continue
                 key = re.sub(r"\s+", " ", title.lower())
                 if key in seen:

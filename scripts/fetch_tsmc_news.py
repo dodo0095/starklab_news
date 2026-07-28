@@ -26,6 +26,8 @@ FEED = (
 # 好訊號（訂單/擴產/財報）加權，純推銷降權
 KW_GOOD = re.compile(r"訂單|擴產|產能|投片|量產|財報|營收|法說|目標價|外資|先進製程|CoWoS|奈米|AI")
 KW_PITCH = re.compile(r"存股|抱緊|該不該買|報明牌|明牌|飆股")
+# 個股跳動快訊（盤中速報等）— 直接濾除
+KW_NOISE = re.compile(r"盤中速報|盤後速報|速報|急拉|急殺|急跌|急漲|委買|委賣|漲停|跌停|鎖死|跳空|成交\d+張")
 
 
 def strip_html(t: str) -> str:
@@ -61,6 +63,8 @@ def main() -> int:
     for entry in feed.entries[:30]:
         title = strip_html(entry.get("title") or "")
         if not title:
+            continue
+        if KW_NOISE.search(title):  # 濾掉盤中速報等個股跳動快訊
             continue
         # Google 新聞標題常帶 " - 來源"，拆出來源
         m = re.match(r"^(.*?)\s+-\s+([^-]+)$", title)
