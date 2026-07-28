@@ -108,6 +108,58 @@ def _quarterly_eps(t):
     return None
 
 
+def _derive_quarterly_eps(t):
+    """台股 EPS 欄位常缺 → 由季度淨利 / 流通股數推算真實季度 EPS。回傳 Series 或 None。"""
+    try:
+        import pandas as pd
+
+        df = None
+        for attr in ("quarterly_income_stmt", "quarterly_financials", "quarterly_incomestmt"):
+            d = getattr(t, attr, None)
+            if d is not None and not getattr(d, "empty", True):
+                df = d
+                break
+        if df is None:
+            return None
+
+        def find_row(names):
+            idx = list(df.index)
+            for n in names:
+                for i in idx:
+                    if isinstance(i, str) and n.lower() == i.lower():
+                        return i
+            for n in names:
+                for i in idx:
+                    if isinstance(i, str) and n.lower() in i.lower():
+                        return i
+            return None
+
+        ni_row = find_row(["Net Income Common Stockholders", "Net Income", "Net Income Continuous Operations"])
+        if ni_row is None:
+            return None
+        ni = df.loc[ni_row].dropna()
+
+        shares = None
+        try:
+            info = t.get_info() if hasattr(t, "get_info") else t.info
+            shares = safe_float(info.get("sharesOutstanding"))
+        except Exception:
+            shares = None
+        if not shares or shares <= 0:
+            return None
+
+        data = {}
+        for col in ni.index:
+            v = safe_float(ni[col])
+            if v is not None:
+                data[col] = v / shares
+        if len(data) < 4:
+            return None
+        return pd.Series(data).sort_index()
+    except Exception:
+        return None
+
+
 def _ttm_eps_for_dates(eps_q, dates):
     """季度 EPS → 近四季 TTM，內插對齊到 dates。"""
     try:
@@ -240,6 +292,12 @@ def build_symbol(symbol, name):
     if eps_q is not None:
         ttm_eps = _ttm_eps_for_dates(eps_q, dates)
     if not ttm_eps or all(v is None or v <= 0 for v in ttm_eps):
+        # 次選：由季度淨利 / 股數推算真實 EPS（台股常見 EPS 欄位缺，但有淨利）
+        d_eps = _derive_quarterly_eps(t)
+        if d_eps is not None:
+            ttm_eps = _ttm_eps_for_dates(d_eps, dates)
+    if not ttm_eps or all(v is None or v <= 0 for v in ttm_eps):
+        # 最後備援：常數 trailing EPS（近似）
         eps_const = None
         try:
             info = t.get_info() if hasattr(t, "get_info") else t.info

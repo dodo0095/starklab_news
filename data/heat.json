@@ -1,10 +1,10 @@
 {
-  "updated_at": "2026-07-28T23:02:17+08:00",
+  "updated_at": "2026-07-28T23:20:27+08:00",
   "score": 35,
   "level": "偏冷",
   "components": {
     "sentiment": 0.5,
-    "market": 0.0,
+    "market": 0.01,
     "volume": 1.0,
     "fed": 0.0
   },
