@@ -9,12 +9,20 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 
 from common import DATA_DIR, now_iso, safe_float, write_json
 
-# name, yfinance symbol
+# name, yfinance symbol —— 美股/國際排
 INDICES = [
     ("道瓊", "^DJI"),
     ("納斯達克", "^IXIC"),
     ("S&P 500", "^GSPC"),
     ("台積電 ADR", "TSM"),
+]
+
+# 台股排（盡量對應上排：大盤指數 + 代表性 ETF + 權值王）
+TW_INDICES = [
+    ("加權指數", "^TWII"),
+    ("櫃買指數", "^TWOII"),
+    ("元大台灣50", "0050.TW"),
+    ("台積電", "2330.TW"),
 ]
 
 
@@ -72,25 +80,25 @@ def fetch_quote(symbol: str) -> dict:
     }
 
 
-def main() -> int:
-    items = []
-    errors = []
-    for name, symbol in INDICES:
+def fetch_group(pairs: list[tuple[str, str]]) -> tuple[list[dict], list[str]]:
+    items: list[dict] = []
+    errors: list[str] = []
+    for name, symbol in pairs:
         try:
             q = fetch_quote(symbol)
-            items.append(
-                {
-                    "name": name,
-                    "symbol": symbol,
-                    **q,
-                }
-            )
+            items.append({"name": name, "symbol": symbol, **q})
             print(f"  {name} ({symbol}): {q['value']} ({q['change_pct']}%)")
         except Exception as e:
             errors.append(f"{symbol}: {e}")
             print(f"  [warn] {name} ({symbol}): {e}")
+    return items, errors
 
-    if not items:
+
+def main() -> int:
+    items, errors = fetch_group(INDICES)
+    tw_items, tw_errors = fetch_group(TW_INDICES)
+
+    if not items and not tw_items:
         print("[error] all market quotes failed; keeping previous JSON")
         return 1
 
@@ -109,10 +117,12 @@ def main() -> int:
     payload = {
         "updated_at": now_iso(),
         "session": session,
-        "indices": items,
+        "indices": items,       # 美股/國際排
+        "tw_indices": tw_items,  # 台股排
     }
-    if errors:
-        payload["partial_errors"] = errors
+    errs = errors + tw_errors
+    if errs:
+        payload["partial_errors"] = errs
 
     write_json(DATA_DIR / "market.json", payload)
     return 0

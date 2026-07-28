@@ -93,6 +93,7 @@ main.container { max-width: 1180px; margin: 0 auto; padding: 0 1.1rem 2.5rem; }
 }
 .cell-head h2 { margin: 0; font-size: 1.02rem; font-weight: 700; color: var(--ink); }
 .cell-tag { margin-left: auto; font-size: 0.74rem; color: var(--muted); }
+.market-tw-head { margin-top: 1.1rem; }
 
 /* section-level head (market row, not a card) */
 .cell:not(.card) > .cell-head { border-bottom: 1px solid var(--line); padding-bottom: 0.45rem; }

@@ -105,32 +105,39 @@ function renderSourceStatus(statusRes) {
 }
 
 /* ---------- Market ---------- */
-function renderMarket(result) {
-  const root = $("#market-cards");
-  const status = $("#market-status");
-  if (!result.ok || !result.data) {
-    root.innerHTML = "";
-    setStatus(status, "error", "市場資料載入失敗，請執行資料更新腳本或稍後重試。");
-    return null;
-  }
-  const data = result.data;
-  const indices = data.indices || [];
-  if (!indices.length) {
-    root.innerHTML = "";
-    setStatus(status, "", "資料更新中 — 尚無市場指數。");
-    return data.updated_at;
-  }
-  if (isStale(data.updated_at)) setStatus(status, "stale", `資料可能過期（更新於 ${formatDateTime(data.updated_at)}），仍顯示上次成功資料。`);
-  else status.hidden = true;
-
-  root.innerHTML = indices.map((item) => {
-    const dir = directionClass(item.change);
-    return `<article class="card ${dir}">
+function indexCardHtml(item) {
+  const dir = directionClass(item.change);
+  return `<article class="card ${dir}">
       <p class="name">${escapeHtml(item.name || item.symbol || "—")}</p>
       <p class="value">${formatNumber(item.value, 2)}</p>
       <p class="change">${formatChange(item.change)}（${formatPct(item.change_pct)}）</p>
     </article>`;
-  }).join("");
+}
+
+function renderIndexRow(indices, rootSel, statusSel, updatedAt, emptyMsg) {
+  const root = $(rootSel);
+  const status = $(statusSel);
+  if (!root) return;
+  if (!indices || !indices.length) {
+    root.innerHTML = "";
+    setStatus(status, "", emptyMsg);
+    return;
+  }
+  if (isStale(updatedAt)) setStatus(status, "stale", `資料可能過期（更新於 ${formatDateTime(updatedAt)}），仍顯示上次成功資料。`);
+  else status.hidden = true;
+  root.innerHTML = indices.map(indexCardHtml).join("");
+}
+
+function renderMarket(result) {
+  if (!result.ok || !result.data) {
+    $("#market-cards").innerHTML = "";
+    setStatus($("#market-status"), "error", "市場資料載入失敗，請執行資料更新腳本或稍後重試。");
+    setStatus($("#market-tw-status"), "note", "台股資料暫不可用。");
+    return null;
+  }
+  const data = result.data;
+  renderIndexRow(data.indices || [], "#market-cards", "#market-status", data.updated_at, "資料更新中 — 尚無美股指數。");
+  renderIndexRow(data.tw_indices || [], "#market-tw-cards", "#market-tw-status", data.updated_at, "資料更新中 — 請執行 fetch_market.py 取得台股資料。");
   return data.updated_at;
 }
 
