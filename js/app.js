@@ -37,6 +37,16 @@ function hoursSince(iso) {
   const d = parseTime(iso);
   return d ? (Date.now() - d.getTime()) / 3.6e6 : Infinity;
 }
+function relTime(iso) {
+  const d = parseTime(iso);
+  if (!d) return "—";
+  const s = (Date.now() - d.getTime()) / 1000;
+  if (s < 0) return formatDateTime(iso);
+  if (s < 60) return "剛剛";
+  if (s < 3600) return `${Math.floor(s / 60)} 分鐘前`;
+  if (s < 86400) return `${Math.floor(s / 3600)} 小時前`;
+  return `${Math.floor(s / 86400)} 天前`;
+}
 function isStale(iso) { return hoursSince(iso) > STALE_HOURS; }
 function escapeHtml(str) {
   return String(str).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
@@ -107,10 +117,12 @@ function renderSourceStatus(statusRes) {
 /* ---------- Market ---------- */
 function indexCardHtml(item) {
   const dir = directionClass(item.change);
+  const note = item.note ? `<p class="idx-note">${escapeHtml(item.note)}</p>` : "";
   return `<article class="card ${dir}">
       <p class="name">${escapeHtml(item.name || item.symbol || "—")}</p>
       <p class="value">${formatNumber(item.value, 2)}</p>
       <p class="change">${formatChange(item.change)}（${formatPct(item.change_pct)}）</p>
+      ${note}
     </article>`;
 }
 
@@ -153,7 +165,7 @@ function newsItemHtml(item, opts = {}) {
   return `<div class="news-item">${rank}<div class="news-body">
       <a class="title" href="${escapeAttr(url)}" target="_blank" rel="noopener noreferrer">${escapeHtml(item.title || "（無標題）")}</a>
       ${summary}
-      <div class="meta"><span class="src">${escapeHtml(item.source || "—")}</span><span>${formatDateTime(item.time)}</span>${stance}${tags}</div>
+      <div class="meta"><span class="src">${escapeHtml(item.source || "—")}</span><span title="${escapeAttr(formatDateTime(item.time))}">${relTime(item.time)}</span>${stance}${tags}</div>
     </div></div>`;
 }
 
@@ -212,7 +224,7 @@ function renderHeat(result) {
       data: [{ value: score }],
     }],
   }, true);
-  window.addEventListener("resize", () => chart.resize());
+  if (!chart.__resizeBound) { window.addEventListener("resize", () => chart.resize()); chart.__resizeBound = true; }
   const demo = d.demo ? '<span class="demo-tag">示範</span>' : "";
   dEl.innerHTML = (d.drivers || []).map((x) => `<span class="chip">${escapeHtml(x)}</span>`).join("") + demo;
   status.hidden = true;
@@ -373,12 +385,23 @@ function renderValuation(result) {
     ],
     series,
   }, true);
-  window.addEventListener("resize", () => chart.resize());
+  if (!chart.__resizeBound) { window.addEventListener("resize", () => chart.resize()); chart.__resizeBound = true; }
 
   // 帶說明：6 條倍數線（藍→粉）+ 月均價，對齊參考圖
   keyEl.innerHTML = lines.map((pe, i) =>
     `<span><i style="background:${LINE_DOT[i] || LINE_DOT[LINE_DOT.length - 1]}"></i>${formatNumber(pe, 1)} 倍本益比</span>`
   ).join("") + `<span><i style="background:${PRICE_COLOR}"></i>月均價</span>`;
+
+  // 「怎麼看」白話說明（依落點動態）
+  const explainEl = $("#val-explain");
+  if (explainEl) {
+    const z = data.zone_label || "";
+    let msg;
+    if (/高點|偏高/.test(z)) msg = "月均價目前位於本益比相對高檔，從獲利角度看偏貴——若未來成長與過去 5 年相近，股價可能已反映較樂觀的預期。";
+    else if (/低點|偏低/.test(z)) msg = "月均價目前位於本益比相對低檔，估值相對便宜——但仍需留意是否反映基本面轉弱。";
+    else msg = "月均價目前位於本益比中間區間，估值大致合理。";
+    explainEl.innerHTML = `<b>怎麼看：</b>${escapeHtml(msg)}<span class="explain-hint">（河流圖＝用歷史本益比區間，看現在股價貴不貴）</span>`;
+  }
   return data.updated_at;
 }
 
@@ -416,10 +439,7 @@ function wireControls() {
 }
 
 /* ---------- boot ---------- */
-async function main() {
-  $("#session-label").textContent = guessSession();
-  wireControls();
-
+async function loadAndRender() {
   const [market, news, tsmc, valuation, events, fed, summary, heat, status] = await Promise.all([
     loadJSON("data/market.json"),
     loadJSON("data/news.json"),
@@ -445,6 +465,14 @@ async function main() {
   ];
   setGlobalMeta(updated, status);
   renderSourceStatus(status);
+  $("#session-label").textContent = guessSession();
+}
+
+async function main() {
+  wireControls();
+  await loadAndRender();
+  // 每 10 分鐘自動重載最新 JSON，免手動 Ctrl+F5（排程更新後畫面會自己跟上）
+  setInterval(loadAndRender, 10 * 60 * 1000);
 }
 
 function guessSession() {

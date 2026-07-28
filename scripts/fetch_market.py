@@ -114,6 +114,24 @@ def main() -> int:
     else:
         session = "us-session"
 
+    # 台積電 ADR 溢價 / 折價（1 ADR = 5 普通股）；標註在台股「台積電」卡上
+    try:
+        tsm = next((x for x in items if x.get("symbol") == "TSM"), None)
+        tw = next((x for x in tw_items if x.get("symbol") == "2330.TW"), None)
+        if tsm and tw and tw.get("value"):
+            fx = None
+            try:
+                fx = fetch_quote("USDTWD=X")["value"]
+            except Exception as e:
+                print(f"  [warn] USDTWD=X: {e}")
+            if fx:
+                implied = tsm["value"] * fx / 5.0
+                prem = (implied / tw["value"] - 1) * 100
+                tw["note"] = f"ADR {'溢價' if prem >= 0 else '折價'} {prem:+.1f}%"
+                print(f"  台積電 ADR {'溢價' if prem >= 0 else '折價'} {prem:+.1f}%（隱含 {implied:.0f} vs 現股 {tw['value']:.0f}）")
+    except Exception as e:
+        print(f"  [warn] ADR premium: {e}")
+
     payload = {
         "updated_at": now_iso(),
         "session": session,

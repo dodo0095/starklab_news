@@ -83,7 +83,9 @@ def main() -> int:
     hawks = sum(1 for i in (fed.get("items") or []) if i.get("stance") == "hawk")
     fed_s = 0.5 if (doves + hawks) == 0 else clamp01((doves - hawks) / (doves + hawks) / 2 + 0.5)
 
-    pcts = [safe_float(x.get("change_pct")) for x in (market.get("indices") or [])]
+    # 大盤動能：美股 + 台股指數平均漲跌幅
+    idx_all = (market.get("indices") or []) + (market.get("tw_indices") or [])
+    pcts = [safe_float(x.get("change_pct")) for x in idx_all]
     pcts = [p for p in pcts if p is not None]
     avg = sum(pcts) / len(pcts) if pcts else 0.0
     mkt = clamp01(avg / 4.0 + 0.5) if pcts else 0.5  # -2%..+2% ≈ 0..1
