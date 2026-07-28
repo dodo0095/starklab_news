@@ -94,6 +94,29 @@ function setGlobalMeta(updatedList, statusRes) {
   badge.className = `badge ${stale ? "warn" : "ok"}`;
 }
 
+function renderSignal(valuationRes, heatRes) {
+  const el = $("#signal-banner");
+  if (!el) return;
+  const v = valuationRes && valuationRes.ok ? valuationRes.data : null;
+  const h = heatRes && heatRes.ok ? heatRes.data : null;
+  const zone = v ? v.zone_label || "" : "";
+  const valHot = /高點|偏高/.test(zone);
+  const valCold = /低點|偏低/.test(zone);
+  const heatHot = h && (["過熱", "偏熱"].includes(h.level) || (typeof h.score === "number" && h.score >= 70));
+  const heatCold = h && (["冰冷", "偏冷"].includes(h.level) || (typeof h.score === "number" && h.score <= 30));
+  if (valHot && heatHot) {
+    el.className = "signal-banner hot";
+    el.hidden = false;
+    el.innerHTML = `⚠ <b>雙訊號提醒：</b>${escapeHtml(v.name || "標的")} 估值處於相對高檔（${escapeHtml(zone)}），且消息面偏熱（${escapeHtml(h.level)} ${h.score}）——追高請留意風險。<span class="sig-note">非投資建議</span>`;
+  } else if (valCold && heatCold) {
+    el.className = "signal-banner cold";
+    el.hidden = false;
+    el.innerHTML = `❄ <b>雙訊號：</b>${escapeHtml(v.name || "標的")} 估值相對低檔且消息面偏冷——可留意是否為相對低基期。<span class="sig-note">非投資建議</span>`;
+  } else {
+    el.hidden = true;
+  }
+}
+
 const SOURCE_NAME = {
   "fetch_market.py": "市場", "fetch_news.py": "新聞", "fetch_tsmc_news.py": "TSMC",
   "fetch_valuation.py": "本益比", "fetch_events.py": "事件", "fetch_fed.py": "Fed",
@@ -270,42 +293,59 @@ const PE_FILL = [
 const LINE_DOT = ["#6aa4d8", "#92c0e6", "#bee0f0", "#f6d98a", "#f3ac93", "#ec8a90"]; // 6 條倍數線 低→高
 const PRICE_COLOR = "#b5372f"; // 沉穩暗紅（月均價）
 
-function renderValuation(result) {
-  const status = $("#chart-status");
-  const titleEl = $("#val-title");
-  const peEl = $("#val-pe");
-  const zoneEl = $("#val-zone");
-  const keyEl = $("#band-key");
-  const chartEl = $("#river-chart");
+let valMetric = "PE"; // PE | PB
+let valFile = "data/valuation.json";
 
+function renderValuation(result) {
+  const chartEl = $("#river-chart");
   if (!result.ok || !result.data) {
-    setStatus(status, "error", "本益比河流圖資料載入失敗（請執行 fetch_valuation.py）。");
+    setStatus($("#chart-status"), "error", "河流圖資料載入失敗（請執行 fetch_valuation.py）。");
     chartEl.style.display = "none";
     return null;
   }
-  const data = result.data;
-  valState = data;
+  valState = result.data;
+  drawValuation();
+  return result.data.updated_at;
+}
+
+function valBlock() {
+  const data = valState;
+  if (!data) return null;
+  if (valMetric === "PB") {
+    if (!data.pb) return null;
+    return { lines: data.pb.lines, band_prices: data.pb.band_prices, current: data.pb.current, band_idx: data.pb.current_band_index, zone: data.pb.zone_label, unit: "淨值比", prefix: "PB", approx: false };
+  }
+  return { lines: data.pe_lines, band_prices: data.band_prices, current: data.current_pe, band_idx: data.current_band_index, zone: data.zone_label, unit: "本益比", prefix: "PE", approx: !!data.approximate };
+}
+
+function drawValuation() {
+  const data = valState;
+  const status = $("#chart-status");
+  const titleEl = $("#val-title"), peEl = $("#val-pe"), zoneEl = $("#val-zone"), keyEl = $("#band-key"), chartEl = $("#river-chart"), explainEl = $("#val-explain");
+  if (!data) return;
+  const blk = valBlock();
   const dates = data.dates || [];
   const close = data.close || [];
-  const lines = data.pe_lines || [];
-  const bandPrices = data.band_prices || [];
-  if (!dates.length || !close.length || bandPrices.length < 2) {
-    setStatus(status, "", "資料更新中 — 尚無本益比資料。");
+  if (!blk || !dates.length || !close.length || !blk.band_prices || blk.band_prices.length < 2) {
+    setStatus(status, "note", valMetric === "PB" ? "此標的暫無淨值比（PB）資料，可切回本益比。" : "資料更新中 — 尚無本益比資料。");
     chartEl.style.display = "none";
-    return data.updated_at;
+    return;
   }
+  const lines = blk.lines;
+  const bandPrices = blk.band_prices;
+  const mult = `倍${blk.unit}`;
 
   // 標題與落點
-  titleEl.textContent = `${data.name || data.symbol || "個股"} 本益比河流圖`;
-  peEl.textContent = data.current_pe != null ? `PE ${formatNumber(data.current_pe, 1)}` : "—";
-  zoneEl.textContent = data.zone_label || "—";
+  titleEl.textContent = `${data.name || data.symbol || "個股"} ${blk.unit}河流圖`;
+  peEl.textContent = blk.current != null ? `${blk.prefix} ${formatNumber(blk.current, 1)}` : "—";
+  zoneEl.textContent = blk.zone || "—";
   const nBand = bandPrices.length - 1;
-  const bi = data.current_band_index;
+  const bi = blk.band_idx;
   const zoneCls = bi == null ? "" : bi >= nBand - 1 ? "expensive" : bi <= 0 ? "cheap" : "fair";
   zoneEl.className = `zone-badge ${zoneCls}`;
 
   let staleMsg = "";
-  if (data.approximate) staleMsg = "（近似估值帶：此標的季度 EPS 不可得，改用常數 EPS 計算）";
+  if (blk.approx) staleMsg = "（近似估值帶：此標的季度 EPS 不可得，改用常數 EPS 計算）";
   if (isStale(data.updated_at)) setStatus(status, "stale", `資料可能過期（更新於 ${formatDateTime(data.updated_at)}）。${staleMsg}`);
   else if (staleMsg) setStatus(status, "note", staleMsg);
   else status.hidden = true;
@@ -363,7 +403,7 @@ function renderValuation(result) {
         for (let b = 0; b < bandPrices.length; b++) { if (c != null && bandPrices[b][i] != null && c >= bandPrices[b][i]) k = b; }
         const peLo = lines[k], peHi = lines[Math.min(k + 1, lines.length - 1)];
         return `<b>${ps[0].axisValue}</b><br/>月均價 <b>${formatNumber(c, 0)}</b>` +
-          `<br/><span style="color:#8a8f98">約 ${formatNumber(peLo, 1)}–${formatNumber(peHi, 1)} 倍本益比</span>`;
+          `<br/><span style="color:#8a8f98">約 ${formatNumber(peLo, 1)}–${formatNumber(peHi, 1)} ${mult}</span>`;
       },
     },
     grid: { left: 8, right: 18, top: 16, bottom: 40, containLabel: true },
@@ -387,22 +427,21 @@ function renderValuation(result) {
   }, true);
   if (!chart.__resizeBound) { window.addEventListener("resize", () => chart.resize()); chart.__resizeBound = true; }
 
-  // 帶說明：6 條倍數線（藍→粉）+ 月均價，對齊參考圖
-  keyEl.innerHTML = lines.map((pe, i) =>
-    `<span><i style="background:${LINE_DOT[i] || LINE_DOT[LINE_DOT.length - 1]}"></i>${formatNumber(pe, 1)} 倍本益比</span>`
+  // 帶說明：6 條倍數線（藍→粉）+ 月均價
+  keyEl.innerHTML = lines.map((v, i) =>
+    `<span><i style="background:${LINE_DOT[i] || LINE_DOT[LINE_DOT.length - 1]}"></i>${formatNumber(v, 1)} ${mult}</span>`
   ).join("") + `<span><i style="background:${PRICE_COLOR}"></i>月均價</span>`;
 
   // 「怎麼看」白話說明（依落點動態）
-  const explainEl = $("#val-explain");
   if (explainEl) {
-    const z = data.zone_label || "";
+    const z = blk.zone || "";
+    const u = blk.unit;
     let msg;
-    if (/高點|偏高/.test(z)) msg = "月均價目前位於本益比相對高檔，從獲利角度看偏貴——若未來成長與過去 5 年相近，股價可能已反映較樂觀的預期。";
-    else if (/低點|偏低/.test(z)) msg = "月均價目前位於本益比相對低檔，估值相對便宜——但仍需留意是否反映基本面轉弱。";
-    else msg = "月均價目前位於本益比中間區間，估值大致合理。";
-    explainEl.innerHTML = `<b>怎麼看：</b>${escapeHtml(msg)}<span class="explain-hint">（河流圖＝用歷史本益比區間，看現在股價貴不貴）</span>`;
+    if (/高點|偏高/.test(z)) msg = `月均價目前位於${u}相對高檔，估值偏貴——若未來與過去 5 年相近，股價可能已反映較樂觀的預期。`;
+    else if (/低點|偏低/.test(z)) msg = `月均價目前位於${u}相對低檔，估值相對便宜——但仍需留意是否反映基本面轉弱。`;
+    else msg = `月均價目前位於${u}中間區間，估值大致合理。`;
+    explainEl.innerHTML = `<b>怎麼看：</b>${escapeHtml(msg)}<span class="explain-hint">（河流圖＝用歷史${u}區間，看現在股價貴不貴）</span>`;
   }
-  return data.updated_at;
 }
 
 /* ---------- 控制項：代碼查詢 / PE-PB 切換 ---------- */
@@ -410,13 +449,26 @@ function wireControls() {
   const go = $("#val-go");
   const input = $("#val-ticker");
   const status = $("#chart-status");
-  function query() {
-    const raw = (input.value || "").trim().replace(/\s.*$/, "");
-    const loaded = valState ? String(valState.symbol || "").replace(/\..*$/, "") : "";
-    if (!raw || raw === loaded) return;
-    setStatus(status, "note",
-      `目前示範標的為 ${valState ? valState.name : "台積電"}（${loaded}）。切換其他標的：在後端執行 ` +
-      `STOCK_SYMBOL=${raw}.TW python scripts/fetch_valuation.py 後重新整理即可。`);
+  function resetMetricUI() {
+    const seg = $("#val-metric");
+    if (seg) seg.querySelectorAll("span").forEach((x) => x.classList.toggle("on", x.dataset.metric === "PE"));
+  }
+  async function query() {
+    const m = (input.value || "").match(/[0-9A-Za-z]{2,6}/);
+    const code = m ? m[0] : "";
+    const loaded = valState ? String(valState.symbol || "").split(".")[0] : "";
+    if (!code || code === loaded) return;
+    setStatus(status, "note", `查詢 ${code}…`);
+    const res = await loadJSON(`data/valuation_${code}.json`);
+    if (res.ok && res.data) {
+      valMetric = "PE";
+      resetMetricUI();
+      valFile = `data/valuation_${code}.json`;
+      renderValuation(res);
+      input.value = `${code} ${res.data.name || ""}`.trim();
+    } else {
+      setStatus(status, "note", `查無「${code}」。觀察名單：2330 台積電 / 2317 鴻海 / 2454 聯發科 / 2308 台達電。（其他標的需在後端執行 STOCK_SYMBOL=代碼.TW python scripts/fetch_valuation.py）`);
+    }
   }
   if (go) go.addEventListener("click", query);
   if (input) input.addEventListener("keydown", (e) => { if (e.key === "Enter") query(); });
@@ -425,14 +477,15 @@ function wireControls() {
   if (seg) {
     seg.querySelectorAll("span").forEach((sp) => {
       sp.addEventListener("click", () => {
+        const metric = sp.dataset.metric;
+        if (metric === "PB" && (!valState || !valState.pb)) {
+          setStatus(status, "note", "此標的暫無淨值比（PB）資料。");
+          return;
+        }
         seg.querySelectorAll("span").forEach((x) => x.classList.remove("on"));
         sp.classList.add("on");
-        if (sp.dataset.metric === "PB") {
-          setStatus(status, "note", "淨值比（PB）河流圖為 P1 項目，稍後開放；目前顯示本益比（PE）。");
-        } else if (valState) {
-          status.hidden = true;
-          renderValuation({ ok: true, data: valState });
-        }
+        valMetric = metric;
+        drawValuation();
       });
     });
   }
@@ -444,7 +497,7 @@ async function loadAndRender() {
     loadJSON("data/market.json"),
     loadJSON("data/news.json"),
     loadJSON("data/tsmc_news.json"),
-    loadJSON("data/valuation.json"),
+    loadJSON(valFile),
     loadJSON("data/events.json"),
     loadJSON("data/fed.json"),
     loadJSON("data/summary.json"),
@@ -465,6 +518,7 @@ async function loadAndRender() {
   ];
   setGlobalMeta(updated, status);
   renderSourceStatus(status);
+  renderSignal(valuation, heat);
   $("#session-label").textContent = guessSession();
 }
 

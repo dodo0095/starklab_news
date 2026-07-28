@@ -75,6 +75,14 @@ code {
 
 /* ---- Layout / grid ---- */
 main.container { max-width: 1180px; margin: 0 auto; padding: 0 1.1rem 2.5rem; }
+.signal-banner {
+  margin-bottom: 14px; padding: 0.7rem 0.95rem; border-radius: 10px; font-size: 0.88rem;
+  line-height: 1.5; border: 1px solid;
+}
+.signal-banner.hot { background: var(--up-soft); color: #8a2b22; border-color: color-mix(in srgb, var(--up) 32%, transparent); }
+.signal-banner.cold { background: var(--accent-soft); color: var(--accent-ink); border-color: color-mix(in srgb, var(--accent) 30%, transparent); }
+.signal-banner b { font-weight: 700; }
+.sig-note { margin-left: 0.5rem; font-size: 0.72rem; opacity: 0.75; }
 .grid { display: grid; grid-template-columns: repeat(12, 1fr); gap: 14px; }
 .cell { grid-column: span 12; min-width: 0; }
 .c3 { grid-column: span 3; } .c4 { grid-column: span 4; } .c5 { grid-column: span 5; }

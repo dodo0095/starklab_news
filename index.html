@@ -26,6 +26,7 @@
     </header>
 
     <main class="container">
+      <div id="signal-banner" class="signal-banner" hidden></div>
       <div class="grid">
         <!-- ROW 1 · 市場總覽 + 消息面熱度 -->
         <section class="cell c8">
@@ -64,7 +65,7 @@
           </div>
           <div class="val-toolbar">
             <div class="lookup">
-              <input id="val-ticker" type="text" value="2330" aria-label="輸入股票代碼" />
+              <input id="val-ticker" type="text" value="2330 台積電" placeholder="輸入代碼，如 2317" aria-label="輸入股票代碼（觀察名單 2330/2317/2454/2308）" />
               <button id="val-go" type="button">查詢</button>
             </div>
             <div class="seg" id="val-metric" role="tablist">
