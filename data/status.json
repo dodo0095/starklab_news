@@ -1,0 +1,40 @@
+{
+  "ran_at": "2026-07-28T12:36:26+08:00",
+  "ok": false,
+  "ok_count": 5,
+  "total": 8,
+  "sources": [
+    {
+      "script": "fetch_market.py",
+      "ok": true
+    },
+    {
+      "script": "fetch_news.py",
+      "ok": false
+    },
+    {
+      "script": "fetch_tsmc_news.py",
+      "ok": false
+    },
+    {
+      "script": "fetch_valuation.py",
+      "ok": true
+    },
+    {
+      "script": "fetch_events.py",
+      "ok": true
+    },
+    {
+      "script": "fetch_fed.py",
+      "ok": false
+    },
+    {
+      "script": "fetch_stock_ma.py",
+      "ok": true
+    },
+    {
+      "script": "fetch_heat.py",
+      "ok": true
+    }
+  ]
+}

@@ -92,6 +92,71 @@
 
 ---
 
+## 資料更新（手動 / 自動排程）
+
+> 更新只會重寫 `data/*.json`；網頁是讀 JSON 繪製，**更新後請在瀏覽器按 Ctrl+F5** 才看到新數字。
+> 每支腳本失敗只保留該項上次成功資料，不影響其他區塊。
+
+### A. 手動更新（想立刻更新、不等排程時）
+
+**方式 1（推薦，會寫 log 方便查）：**
+```powershell
+cd C:\Users\AUSER\Desktop\starklab_news
+powershell -ExecutionPolicy Bypass -File scripts\update_with_log.ps1
+```
+
+**方式 2（直接跑，輸出在螢幕）：**
+```powershell
+cd C:\Users\AUSER\Desktop\starklab_news
+python scripts\run_all.py
+```
+
+兩者都會**一次更新全部**：市場、五大新聞、TSMC、本益比股價、事件、Fed、熱度。
+
+**只更新單一項目**（例如只想重抓股價 / 河流圖）：
+```powershell
+python scripts\fetch_valuation.py     # 本益比河流圖（會印出「現價(收盤)=…」可核對）
+python scripts\fetch_market.py        # 大盤 / 台積電 ADR
+python scripts\fetch_news.py          # 美國重大新聞（中文）
+python scripts\fetch_tsmc_news.py     # 台積電個股新聞
+python scripts\fetch_fed.py           # 聯準會發言
+python scripts\fetch_heat.py          # 消息面熱度（需先跑上面幾支）
+```
+
+> 換河流圖標的：`$env:STOCK_SYMBOL="2317.TW"; $env:STOCK_NAME="鴻海"; python scripts\fetch_valuation.py`
+
+### B. 自動排程（每天 4 次，設定一次即可）
+
+以**系統管理員**開啟 PowerShell，於專案根目錄執行一次：
+```powershell
+cd C:\Users\AUSER\Desktop\starklab_news
+powershell -ExecutionPolicy Bypass -File scripts\register_tasks.ps1
+```
+會建立 4 個 Windows 工作排程（並自動清掉舊版 21:00）：
+
+| 任務 | 時間 | 用途 |
+|------|------|------|
+| `StarkLabNews_0400` | 04:00 | 美股收盤後 |
+| `StarkLabNews_0800` | 08:00 | 台股開盤前 |
+| `StarkLabNews_1400` | 14:00 | 台股收盤後 |
+| `StarkLabNews_2000` | 20:00 | 美股開盤前 |
+
+每次觸發都執行 `run_all.py`，重抓真實資料並覆蓋。
+
+**確認排程存在：**
+```powershell
+schtasks /Query /TN StarkLabNews_0400
+schtasks /Query /TN StarkLabNews_0800
+schtasks /Query /TN StarkLabNews_1400
+schtasks /Query /TN StarkLabNews_2000
+```
+
+**確認有跑成功：** 看網頁頂部「最後更新」時間、底部各來源 ✓，或查 `logs\update-YYYY-MM-DD.log`（結尾 `exit=0`）。
+
+> 電腦關機會錯過排程；已設 `StartWhenAvailable` 會擇機補跑，最穩仍是開機後手動跑一次方式 1。
+
+---
+
 ## 接手後：3 分鐘跑起來
 
 ```powershell

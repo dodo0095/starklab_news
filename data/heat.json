@@ -1,8 +1,15 @@
 {
-  "updated_at": "2026-07-28T07:55:00+08:00",
-  "score": 72,
-  "level": "偏熱",
-  "components": { "sentiment": 0.68, "market": 0.55, "volume": 0.8, "fed": 0.6 },
-  "drivers": ["利多新聞偏多", "重大消息量大", "Fed 偏鴿"],
-  "demo": true
+  "updated_at": "2026-07-28T12:36:26+08:00",
+  "score": 59,
+  "level": "中性",
+  "components": {
+    "sentiment": 0.5,
+    "market": 0.47,
+    "volume": 1.0,
+    "fed": 0.67
+  },
+  "drivers": [
+    "Fed 偏鴿",
+    "重大消息量大"
+  ]
 }
