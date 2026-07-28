@@ -1,16 +1,16 @@
 {
-  "updated_at": "2026-07-28T23:20:27+08:00",
-  "score": 35,
-  "level": "偏冷",
+  "updated_at": "2026-07-28T23:49:50+08:00",
+  "score": 19,
+  "level": "冰冷",
   "components": {
-    "sentiment": 0.5,
+    "sentiment": 0.1,
     "market": 0.01,
     "volume": 1.0,
     "fed": 0.0
   },
   "drivers": [
+    "利空新聞偏多",
     "大盤走弱",
-    "Fed 偏鷹",
-    "重大消息量大"
+    "Fed 偏鷹"
   ]
 }
