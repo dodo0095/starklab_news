@@ -13,7 +13,7 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 
 from common import DATA_DIR, now_iso, write_json
-from news_common import cnyes, fetch, gnews
+from news_common import cnyes, enrich, fetch, gnews
 
 KW_HAWK = re.compile(r"升息|加息|鷹|抗通膨|通膨|緊縮|按兵不動|維持利率|保持耐心|不急於|不降息")
 KW_DOVE = re.compile(r"降息|減息|鴿|寬鬆|放緩|降溫|轉向|軟著陸|降利率")
@@ -32,6 +32,7 @@ def stance(text: str) -> str:
 def main() -> int:
     sources = [
         ("鉅亨網", cnyes("wd_stock")),  # 國際股市，有摘要
+        ("鉅亨網", cnyes("headline")),  # 頭條，補足有摘要的聯準會新聞
         ("Google 新聞", gnews("(聯準會 OR Fed OR 鮑爾 OR FOMC) (利率 OR 通膨 OR 降息 OR 升息) when:3d")),
     ]
     items = fetch(sources, keyword=r"聯準會|美聯儲|Fed|FOMC|鮑爾|降息|升息|利率|通膨")
@@ -40,7 +41,10 @@ def main() -> int:
         return 1
 
     items.sort(key=lambda x: (1 if x["summary"] else 0, x["_ts"]), reverse=True)
-    top = items[:5]
+    cands = items[:8]
+    enrich(cands)  # 對缺摘要者抓文章頁補摘要
+    cands.sort(key=lambda x: (1 if x["summary"] else 0, x["_ts"]), reverse=True)
+    top = cands[:5]
 
     out = [
         {

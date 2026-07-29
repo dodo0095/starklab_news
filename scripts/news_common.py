@@ -59,6 +59,45 @@ def _parse_time(entry):
     return None
 
 
+def enrich(items):
+    """對 summary 為空的項目，抓文章頁的 og:description / meta description 補摘要。
+
+    best-effort：抓不到就維持空白，不影響流程。就地修改傳入的 list。
+    """
+    try:
+        import requests
+        from bs4 import BeautifulSoup
+    except Exception:
+        return items
+
+    headers = {"User-Agent": "Mozilla/5.0 (compatible; StarkLabNews/1.0)"}
+    for it in items:
+        if it.get("summary") or not it.get("url"):
+            continue
+        try:
+            r = requests.get(it["url"], timeout=6, headers=headers, allow_redirects=True)
+            if not r.ok or not r.text:
+                continue
+            soup = BeautifulSoup(r.text, "html.parser")
+            desc = ""
+            for attrs in ({"property": "og:description"}, {"name": "description"}, {"name": "twitter:description"}):
+                tag = soup.find("meta", attrs=attrs)
+                if tag and tag.get("content") and len(tag["content"].strip()) > 15:
+                    desc = tag["content"].strip()
+                    break
+            if not desc:
+                p = soup.find("p")
+                if p:
+                    txt = _strip(p.get_text())
+                    if len(txt) > 20:
+                        desc = txt
+            if desc:
+                it["summary"] = _summarize(desc)
+        except Exception:
+            continue
+    return items
+
+
 def fetch(sources, keyword: str | None = None, max_per: int = 50):
     """sources: list[(name, url)]。cnYES 來源取真實摘要，Google 僅標題。
 

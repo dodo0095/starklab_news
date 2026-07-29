@@ -1,43 +1,47 @@
 {
-  "updated_at": "2026-07-28T23:20:20+08:00",
+  "updated_at": "2026-07-29T10:36:50+08:00",
   "symbol": "2330.TW",
   "name": "台積電",
   "items": [
     {
-      "title": "AI燒錢疑慮升溫！費半指數重挫近5％ 台積電ADR持續承壓",
-      "source": "Yahoo股市",
-      "url": "https://news.google.com/rss/articles/CBMi1gJBVV95cUxPVW5OcGdfRFRGbk55bGQtaS16QzZsYm11ZWtvaVlZNVItNUVRZE5PVEh4MUVESHNuZTdnMklucWs3YXFBWFpnc3VudC1tbWhrWHNkXzFld3ZWTGczRlotOVMtWEpEazM2enR2ZGRveUR6a2F4X2RjUk01WGhSc1ZiT3VvS1Yzd1RnMVNUVEkyLTBwYlRHMnU2Wnc3aHo4R2dwR0VOVWVXOFVLZmFiSHlaVk55UnB2Mm1pWDk4ZS1JNVF0ZzhBZU5YQzJtU3hycXY1cE5GSnNNdmRVQmN4Ri1sNzNjT1R5OFc1UldTT1BJanI1Qk1TU20waThLcmJseFo4V1BWby1kdUxLekNpWkZUbDIyX0ZhbFJhVWQ2YWljN3ZWUWNxdDJfVFJkZy1FSUFmcFpzNW1xbGlFcDI1cGtQV1BBMV9GdDlzc3NObkZYOEs5TWlfYnc?oc=5",
-      "time": "2026-07-28T22:55:00+08:00"
+      "rank": 1,
+      "title": "台積電更新JASM近況 人員安全無虞已逐步回產線",
+      "summary": "台積電 (2330-TW)(TSM-US) 晚間更新熊本廠 JASM 情況，公司指出，目前廠區所有人員皆確認安全無虞，亦已完成 JASM 廠區建築震後損害檢查，確認結構安全無虞逐…",
+      "source": "鉅亨網",
+      "url": "https://news.cnyes.com/news/id/6548891",
+      "time": "2026-07-28T21:47:34+08:00"
     },
     {
-      "title": "美股週二開高 但AI科技股繼續重挫、台積電大跌4%",
-      "source": "Yahoo新聞",
-      "url": "https://news.google.com/rss/articles/CBMivgJBVV95cUxOSzZuczRsZlp2UWZYblpJQzdIN0xFRnk4S1NWSmJvbmV3enprU3JmM1ZqdTJnZ2VUYzhSdzMxRzdENEdDcHdIeUNiVXdLdE9VQWwzWlVyRFBjaWNaNzQ5T25EdVBCZm9zV2JsWlk2NVY3WUdjZXNzakFIZE0zR3o3aEg0SmdwXzNrUm16WG55cjUwNjJnanB3bHFDR3VELXJTRzNDd0FLWU1PRktxaDJLSFFXaEFsQk50SnctX1gyRExXV2NadXJFT3NkcEV6ek5POFhValJjOGFHWWt2YmxqZlZpXzdUNHU5OV9nX3JjcmthSXBfdjZYb3c0elZWUWNyYmdiVElDOFhBbWtwcGZWNnhkVnUtRF9KRUVCWjZVclVxX3ItcDNibmZueGQxX2gybjJtd1lWWmxKeFdJZmc?oc=5",
-      "time": "2026-07-28T22:28:17+08:00"
+      "rank": 2,
+      "title": "熊本強震對台廠影響 台積電緊急疏散 經部：研華台達電等廠區未受創",
+      "summary": "日本熊本縣於 28 日下午發生規模達 7.1 的強烈地震，最大震度甚至觀測到 7 級，並一度發布海嘯注意預警，震撼當地半導體供應鏈與各界。針對外界高度關心台灣在地廠商及供應鏈是否…",
+      "source": "鉅亨網",
+      "url": "https://news.cnyes.com/news/id/6548777",
+      "time": "2026-07-28T19:34:38+08:00"
     },
     {
-      "title": "連賣4天還不夠！台積電再被外資提款335億元、失守2300元大關「這記體體指標」也被脫手1.8萬張",
-      "source": "Yahoo股市",
-      "url": "https://news.google.com/rss/articles/CBMi7ANBVV95cUxNN2RLQUZhUkUtLXFqUldvR2ZYbUMxYWE1WGlvc0R3Snl1UFl0WXRNazhmWHEwU2lnLVlVQWtMbVd3N1hLRGRhMXFObHI1Z3o3V2tuMHR4aHpKMFlUYUYyQTM2cFRZUGN5bnhNY1JDUlBrOFVHTEZUT0labHU1UW9zVWhPOFZZNnBUeVBVMmk2eHJkNjlBZFJKaUFGV3pQR2RHa0ozSkJKZzV6US01WWZLWkhadkhoVzM3ZDZWam54NzNhdW1lRkg0azcyLW5FMDdCOXdaTDBZcUVfS0JFRU54c3JFcU9fUVhRMXpVaVpqQXZiVXZUcmtTOHc5ZE1jbWNSM3NnXzJFUkVuaXZDMWh5SzVuUFhGMEpGQTF1VE96ZWY4Z2xwdTM2cGRTT3dfdGE3UWlmRmg3SlUyeXdXVzFUQk41Z3NCTFBzTkdPME9CTEJlODh1LU5ueElBandQUkl2RWJ2amE0NDFDc3lrUnZzcmZXTFFIUjlac0xsd1JVN3lGQ2NmbDlWT040Z0plTVNGbWhvWUhpWDZyUkYxdUNqbHV2bnZsV0llMlB3QWJTLTczb0xRYktCcmhKYVNkX285SnNZbkk5V1B5LXlJbnRsSVNYNFNqU2FmNlpIZHdMX0w1WEs2YkE0YnV5QnU?oc=5",
-      "time": "2026-07-28T20:36:00+08:00"
+      "rank": 3,
+      "title": "熊本7.1強震劇烈搖晃 台積電JASM啟動疏散程序",
+      "summary": "日本熊本今 (28) 日發生芮氏規模 7.1 強烈地震，劇烈搖晃造成當地多處災情，台積電 (2330-TW)(TSM-US) 日本熊本廠 JASM 所處地點也在此次地震中測得震度…",
+      "source": "鉅亨網",
+      "url": "https://news.cnyes.com/news/id/6548721",
+      "time": "2026-07-28T18:44:29+08:00"
     },
     {
-      "title": "台股挫2千點創「史上盤中第5大」！「這檔面板」攜台積電、揖斐電攻玻璃基板奪冠聯電法說行情暖身同受矚",
-      "source": "Yahoo股市",
-      "url": "https://news.google.com/rss/articles/CBMiywNBVV95cUxPdzRIeVV4UXUyYnJSV1RjWVRIbm9nXzhhaXVKcVJUZG9QaWgwSzJBdVRoVHdpdUhiMURCeFJac1hBa0VWemx0eVNkbXdPZVBGc1lhWmJxSjd1UWZVY29PLWtiOXhtcnM1aDE0dHp0ajZsdUtNcXBhSllJU2hnLXcwVE94RUZGdnRfNlQyS015WlBUUGwyNVVzYWxMelVNX2tyOThnUm5tbjF3QjFaTkhVUmtzblNPdnh2Q3dyRXN5eF9mNVpNSm9qQ3RZc1ZaSGhPODNxdTFQY0lnSWZLc19KMURjell4YWNBbHVyVzRaSXVuaFpFU3pWUGV2bndzWWRUckVlR3hqTFF1SnJ0Tkxrc3JhdmVoZlFHbXlZYkZ1OWxlaVh5R1ZhY0pWWVVwNGhxOEllWTZDNjJqWXFSaHpDMml6R0VSNDFyUzBnYlRjaXNtaW1DZVR3RE9UUlhmWU5oNkdUYlJ3b1FwOW1VR0ZiQUh4UV80a1VJMDAtTUdDUkZJdUdYdnBXc2xSc3BaNGlqVlZjWVRGOVdNVzZHT3kwZGR6VUpybDlIQWUwdC1sdVotRnU5YjN6a0V0WHVqNU5KYURHQ0E0b3hCTUk?oc=5",
-      "time": "2026-07-28T11:32:35+08:00"
+      "rank": 4,
+      "title": "台灣企業太猛！《財星》500強揭曉 台積電首闖全球百大、緯創寫最大驚奇",
+      "summary": "",
+      "source": "自由財經",
+      "url": "https://news.google.com/rss/articles/CBMiX0FVX3lxTE5hT1BsQmJLZ2p4bjdjT3dOZTNVUzRUai1rYTg5SlM0ZlZpTzZIRjcxYkNVRklKTVM5ZktPbExya1Z4ankxR29YMFpjVW5xVHlLdkhDZlNPbFBIN0Q0eXhj?oc=5",
+      "time": "2026-07-29T10:27:17+08:00"
     },
     {
-      "title": "台積電財報亮眼 外資卻狂倒貨？ 華爾街「不買單」背後原因曝光",
-      "source": "Yahoo股市",
-      "url": "https://news.google.com/rss/articles/CBMijANBVV95cUxPSjRzQThoOFhfa0ZPOXF6WmUzUDhmSTd1blBSVVZsVkZrdENYMExIdWQ3UWtOTDFHdTlJWV9yXy1vOVd0aGhac1RlVWFGaERXcWd6M2VHVE56aV9xT0hheTl5X21oeFVlcDBZNXlUejhpMUR0ejVFUGtJeEtWVjJPYkRETzQ4NktVUkZYbUFySVRRY3BIQ2RmVUtoaGNnaHBrbTFqWFdlUlJtYklkVk4td05NeUlXTjgxaHZNWnFwXzVhdEdkdXFvY29OVm0ybUs1aUVzenQ2bkNaLTdSODZiOUlvQ1hkVlZ6X1NQbVQwblp0cmtCT1FmNVgxZFFlbzczMHJDQkNqbk9aMktHRlFlc0RDTmpMODk5TlhWTkZOOGFiaWNBWUVPNVdOWno3dmN0UjRfVWVxeGJlbHNFOTRPWmhVUThNV25TSnR3cmRvTlpkZFVNcE1aOURoQWEyTDJ2d29FVWx5dG1QOFlfLWxjTG5TNzdBamhKUzE5MzM0MXpZOWtBek8yRGpNbVE?oc=5",
-      "time": "2026-07-28T10:47:32+08:00"
-    },
-    {
-      "title": "熊本7.1強震！台積電JASM晶圓廠區「最新現況曝光」",
-      "source": "Yahoo股市",
-      "url": "https://news.google.com/rss/articles/CBMiswJBVV95cUxNOG5IamJXMHh0WFgtRnVKTDZiNTBXR0VWMlBqUzZoVzZXU1dNbHVxQ0YyRWk4NV9lSzZNbkxyMWRtYmJ4OUZLdmwwQ3dYNU0xZXoyQUtrcnU3TUNiRzFRcnJ3aVF6ZHJReHYyNTUxWU9ReXhzZ2VEY0tHQnBYR0djbFBVRW42WnVXQUpST3JJUlJkOGxjWnFTZGF1ZXVDQUxVcHlKT2Rnb3FQV0ZjM0lmTnBfMVBUd3o5S1ByM2NiLU9rampQV3dhUzJkeFFLanEwTjBmeFh5d2ZJLXlJRHVMN1dxbHV0dmdGc3pyaXpDdXg4NmZIMVE2NUJkUzd3UEoyMmNzUTBRNTJBcmwtRUctTHdXT1VqVktFNWx2Q3diSS1fWWFubHA3dHZldlJfX1c1Nmg4?oc=5",
-      "time": "2026-07-28T22:46:11+08:00"
+      "rank": 5,
+      "title": "美股法說 KLAC｜科磊營收創新高卻遭逢賣壓、上修全年設備展望，台積電與漢唐供應鏈受矚 (KLAC US)",
+      "summary": "",
+      "source": "sinotrade.com.tw",
+      "url": "https://news.google.com/rss/articles/CBMiuARBVV95cUxQeENoM0gzSTRjeFhaTHhudTVIX291Ql9XNkl0Wm9icmpESHpSNDhtLUFuTFFXb25pSkgza01JTmUyVGdLV1dYNnAwQ1BVNlNJWnpnZVpLdXh2emx0UDR0TWhrWkpqRnJHSE90cXRFNW1uUmdmYnVIQWw3MU4tZGQxTDdhWTBZdVhwMGZkNG9wQk1XNkNiY1FuaThacnprclRnQmpIZDhSMkk0STlsTFVUM3Y4RDQ4aVFjcTY4ek9IeGRiVEphSXhiTC13d1VEUVhJRFBfdEhPMXpnUGctTENBT0dLS0ZfalJXY3VQU0RhWFlDY29rVlNISzN3Z1ZaU0VwaE1nSlcyRzN2WGZpX1VkdndycmFnNG1HYkRSN2E1NTJWaTZlQUZaSUNJVVpjOGFhbFB5TEg1NGMyOVotby1VQ2g2clVNeWJjb01ma3FXdms0N1BtN3pnTEFXS2x5d2RZcUhldVdSSVN3U0JyWEJmdnhBLTNMS3Y0aFFJemxydUZ4Y2ZnejlhS3hfTjByUzI0djhHNF8yNnZ0QWp2TG9HSjVRcWJ6bXRjbW1IdzVNV2N4dkF1YkJnbUtWT2tFd0hhSm93UEthZF91ZmljYzcwSHJ4cVVJUkhlX1V4YTllSHdWTFpwMjZ2WHFRekQzZ2l3U0JfdmFMYWtfN1RDVzU2MU94Sl96Vjl2bTJoVnlybDRyTlJtWVRid3ZwaklpZm41Y3JhSF9Jcy1tbmhidGg1VEdxSU9YSEd2?oc=5",
+      "time": "2026-07-29T10:20:20+08:00"
     }
   ]
 }

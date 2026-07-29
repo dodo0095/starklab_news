@@ -11,12 +11,13 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 
 from common import DATA_DIR, now_iso, write_json
-from news_common import cnyes, fetch, gnews
+from news_common import cnyes, enrich, fetch, gnews
 
 
 def main() -> int:
     sources = [
         ("鉅亨網", cnyes("tw_stock")),  # 台股，有摘要（台積電新聞在此）
+        ("鉅亨網", cnyes("headline")),  # 頭條，補足有摘要的台積電新聞
         ("Google 新聞", gnews("台積電 OR TSMC OR 2330 when:2d")),
     ]
     items = fetch(sources, keyword=r"台積電|TSMC|2330", max_per=60)
@@ -25,7 +26,10 @@ def main() -> int:
         return 1
 
     items.sort(key=lambda x: (1 if x["summary"] else 0, x["_ts"]), reverse=True)
-    top = items[:5]
+    cands = items[:8]
+    enrich(cands)  # 對缺摘要者抓文章頁補摘要
+    cands.sort(key=lambda x: (1 if x["summary"] else 0, x["_ts"]), reverse=True)
+    top = cands[:5]
 
     out = [
         {

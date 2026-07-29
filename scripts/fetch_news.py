@@ -13,7 +13,7 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 
 from common import DATA_DIR, now_iso, write_json
-from news_common import cnyes, fetch, gnews
+from news_common import cnyes, enrich, fetch, gnews
 
 KEYWORDS_MAJOR = re.compile(
     r"美股|台股|大盤|加權|道瓊|那斯達克|納斯達克|標普|S&P|費半|"
@@ -37,7 +37,10 @@ def main() -> int:
 
     # 有摘要（鉅亨）優先，再依時間新到舊
     items.sort(key=lambda x: (1 if x["summary"] else 0, x["_ts"]), reverse=True)
-    top = items[:5]
+    cands = items[:8]
+    enrich(cands)  # 對缺摘要者抓文章頁補摘要
+    cands.sort(key=lambda x: (1 if x["summary"] else 0, x["_ts"]), reverse=True)
+    top = cands[:5]
 
     out = [
         {

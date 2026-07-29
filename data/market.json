@@ -1,58 +1,58 @@
 {
-  "updated_at": "2026-07-28T23:20:16+08:00",
-  "session": "us-session",
+  "updated_at": "2026-07-29T10:36:46+08:00",
+  "session": "pre-us-open",
   "indices": [
     {
       "name": "道瓊",
       "symbol": "^DJI",
-      "value": 52753.0703,
-      "change": 550.2422,
-      "change_pct": 1.054
+      "value": 52747.3203,
+      "change": 537.2403,
+      "change_pct": 1.029
     },
     {
       "name": "納斯達克",
       "symbol": "^IXIC",
-      "value": 24868.7578,
-      "change": -63.3242,
-      "change_pct": -0.254
+      "value": 24876.9121,
+      "change": -55.1699,
+      "change_pct": -0.2213
     },
     {
       "name": "S&P 500",
       "symbol": "^GSPC",
-      "value": 7430.8799,
-      "change": 17.4497,
-      "change_pct": 0.2354
+      "value": 7428.7798,
+      "change": 15.5998,
+      "change_pct": 0.2104
     },
     {
       "name": "台積電 ADR",
       "symbol": "TSM",
-      "value": 387.8795,
-      "change": -9.8305,
-      "change_pct": -2.4718
+      "value": 392.31,
+      "change": -5.4,
+      "change_pct": -1.3578
     }
   ],
   "tw_indices": [
     {
       "name": "加權指數",
       "symbol": "^TWII",
-      "value": 41603.3594,
-      "change": -2082.7891,
-      "change_pct": -4.7676
+      "value": 40419.9883,
+      "change": -1215.3828,
+      "change_pct": -2.9191
     },
     {
       "name": "元大台灣50",
       "symbol": "0050.TW",
-      "value": 97.15,
-      "change": -4.35,
-      "change_pct": -4.2857
+      "value": 94.35,
+      "change": -2.8,
+      "change_pct": -2.8821
     },
     {
       "name": "台積電",
       "symbol": "2330.TW",
-      "value": 2280.0,
-      "change": -75.0,
-      "change_pct": -3.1847,
-      "note": "ADR 溢價 +10.1%"
+      "value": 2250.0,
+      "change": -35.0,
+      "change_pct": -1.5317,
+      "note": "ADR 溢價 +13.3%"
     }
   ],
   "partial_errors": [
