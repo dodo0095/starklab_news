@@ -94,6 +94,46 @@ function setGlobalMeta(updatedList, statusRes) {
   badge.className = `badge ${stale ? "warn" : "ok"}`;
 }
 
+function renderTodaySummary(marketRes, heatRes, valuationRes) {
+  const el = $("#today-summary");
+  if (!el) return;
+  const m = marketRes && marketRes.ok ? marketRes.data : null;
+  const h = heatRes && heatRes.ok ? heatRes.data : null;
+  const v = valuationRes && valuationRes.ok ? valuationRes.data : null;
+
+  // 大盤方向（美股夜盤平均漲跌幅）
+  let mktPart = "";
+  const usPcts = m && Array.isArray(m.indices) ? m.indices.map((x) => x.change_pct).filter((x) => typeof x === "number") : [];
+  if (usPcts.length) {
+    const avg = usPcts.reduce((a, b) => a + b, 0) / usPcts.length;
+    mktPart = avg > 0.3 ? "美股偏強" : avg < -0.3 ? "美股偏弱" : "美股漲跌互見";
+  }
+  // 消息面熱度
+  const heatPart = h && h.level ? `消息面${h.level}` : "";
+  // 估值
+  let valPart = "";
+  let valHot = false, valCold = false;
+  if (v && v.zone_label) {
+    valPart = `${v.name || "台積電"}估值處${v.zone_label}`;
+    valHot = /高點|偏高/.test(v.zone_label);
+    valCold = /低點|偏低/.test(v.zone_label);
+  }
+  // 綜合語氣
+  const heatHot = h && (["過熱", "偏熱"].includes(h.level) || (typeof h.score === "number" && h.score >= 70));
+  const heatCold = h && (["冰冷", "偏冷"].includes(h.level) || (typeof h.score === "number" && h.score <= 30));
+  let take = "";
+  if (valHot && heatHot) take = "盤前偏防禦，留意追高";
+  else if (valCold && heatCold) take = "留意是否為相對低基期";
+  else if (mktPart === "美股偏弱") take = "台股開盤留意賣壓";
+  else if (mktPart === "美股偏強") take = "台股開盤氣氛偏多";
+
+  const head = [mktPart, heatPart].filter(Boolean).join("、");
+  let text = head;
+  if (valPart) text += (text ? "；" : "") + valPart;
+  if (take) text += `——${take}`;
+  el.textContent = text ? `${text}。` : "資料更新中，稍後生成今日速結。";
+}
+
 function renderSignal(valuationRes, heatRes) {
   const el = $("#signal-banner");
   if (!el) return;
@@ -519,6 +559,7 @@ async function loadAndRender() {
   setGlobalMeta(updated, status);
   renderSourceStatus(status);
   renderSignal(valuation, heat);
+  renderTodaySummary(market, heat, valuation);
   $("#session-label").textContent = guessSession();
 }
 
