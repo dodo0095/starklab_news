@@ -217,9 +217,9 @@ function renderMarket(result) {
 }
 
 /* ---------- 新聞清單（共用） ---------- */
-function newsItemHtml(item, opts = {}) {
+function newsItemHtml(item, opts = {}, idx = 0) {
   const url = item.url || "#";
-  const rank = opts.rank ? `<span class="rank">${item.rank ?? "·"}</span>` : "";
+  const rank = opts.rank ? `<span class="rank">${item.rank ?? idx + 1}</span>` : "";
   const summary = item.summary ? `<p class="summary">${escapeHtml(item.summary)}</p>` : "";
   const stance = item.stance
     ? `<span class="stance ${item.stance}">${item.stance === "hawk" ? "偏鷹" : item.stance === "dove" ? "偏鴿" : "中性"}</span>`
@@ -249,7 +249,7 @@ function renderNewsList(result, rootSel, statusSel, opts = {}) {
   }
   if (isStale(data.updated_at)) setStatus(status, "stale", `${opts.label || "新聞"}資料可能過期（更新於 ${formatDateTime(data.updated_at)}）。`);
   else status.hidden = true;
-  root.innerHTML = items.map((it) => newsItemHtml(it, opts)).join("");
+  root.innerHTML = items.map((it, i) => newsItemHtml(it, opts, i)).join("");
   return data.updated_at;
 }
 
@@ -549,10 +549,10 @@ async function loadAndRender() {
     renderMarket(market),
     renderHeat(heat),
     renderNewsList(news, "#news-list", "#news-status", { rank: true, limit: 5, label: "重大新聞" }),
-    renderNewsList(tsmc, "#tsmc-list", "#tsmc-status", { limit: 5, label: "台積電新聞" }),
+    renderNewsList(tsmc, "#tsmc-list", "#tsmc-status", { rank: true, limit: 5, label: "台積電新聞" }),
     renderValuation(valuation),
     renderEvents(events),
-    renderNewsList(fed, "#fed-list", "#fed-status", { limit: 5, label: "聯準會發言" }),
+    renderNewsList(fed, "#fed-list", "#fed-status", { rank: true, limit: 5, label: "聯準會發言" }),
     renderBullets(summary, "#summary-list", "global"),
     renderBullets(summary, "#support-list", "support"),
   ];
