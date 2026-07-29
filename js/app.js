@@ -509,7 +509,7 @@ async function loadAndRender() {
     renderMarket(market),
     renderHeat(heat),
     renderNewsList(news, "#news-list", "#news-status", { rank: true, limit: 5, label: "重大新聞" }),
-    renderNewsList(tsmc, "#tsmc-list", "#tsmc-status", { limit: 6, label: "台積電新聞" }),
+    renderNewsList(tsmc, "#tsmc-list", "#tsmc-status", { limit: 5, label: "台積電新聞" }),
     renderValuation(valuation),
     renderEvents(events),
     renderNewsList(fed, "#fed-list", "#fed-status", { limit: 5, label: "聯準會發言" }),
